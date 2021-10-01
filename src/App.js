@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter as Router, Route, Switch,Redirect } from 'react-router-dom';
-import MatchingReport from './layouts/MatchReport'
-import Login from './layouts/Login'
-import MyTask from './layouts/MyTask'
+import MatchingReport from './view/MatchReport'
+import Login from './view/Login'
+import MyTask from './view/MyTask'
 import NavBar from './components/NavBar'
 
 class App extends Component {

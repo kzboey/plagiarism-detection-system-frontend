@@ -1,7 +1,9 @@
 import React from "react";
-import {Button,TextField,Grid,Paper,Typography,Link,} from "@material-ui/core";
+import {TextField,Grid,Paper,Typography,Link,} from "@material-ui/core";
 import './index.scss';
 import CustomButton from '../../components/CustomButton'
+import HttpRequest from '../../util/HttpRequest'
+import AppConfig from '../../util/AppConfig.js';
 
 class Login extends React.Component {
     constructor(props) {
@@ -17,11 +19,20 @@ class Login extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        if (this.state.username == 'admin' && this.state.password == 'admin') {
-            this.props.history.push("/home");
-        } else {
-        alert('Incorrect Credntials!');}
+        // if (this.state.username == 'admin' && this.state.password == 'admin') {
+        //     this.props.history.push("/home");
+        // } else {
+        //     alert('Incorrect Credntials!');}
+        // }
+        //login implementation
+        post(AppConfig.getAPI('login'),{}).then(resp =>{
+            if(resp.code == 0){
+                this.props.history.push("/home");
+            }
+        })
+        
     }
+
 
     render() {
         return (
