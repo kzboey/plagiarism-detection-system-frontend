@@ -11,19 +11,8 @@ export default class AppConfig {
 			return '';
 	}
 
-	static getDefaultLocale() {
-		return Config.locale.default;
-	}
-
-	static getSupportedLocale() {
-		return Config.locale.support;
-	}
-
 	static getRequestTimeout() {
 		return Config.request.timeout;
 	}
 
-	static getImpMainPage() {
-		return Config.imp.mainPage;
-	}
 }

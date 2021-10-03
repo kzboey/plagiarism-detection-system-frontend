@@ -2,7 +2,7 @@ import React from "react";
 import {TextField,Grid,Paper,Typography,Link,} from "@material-ui/core";
 import './index.scss';
 import CustomButton from '../../components/CustomButton'
-import HttpRequest from '../../util/HttpRequest'
+import {get,post} from '../../util/HttpRequest'
 import AppConfig from '../../util/AppConfig.js';
 
 class Login extends React.Component {
@@ -26,11 +26,10 @@ class Login extends React.Component {
         // }
         //login implementation
         post(AppConfig.getAPI('login'),{}).then(resp =>{
-            if(resp.code == 0){
+            if(resp.status == 0){
                 this.props.history.push("/home");
             }
-        })
-        
+        })    
     }
 
 

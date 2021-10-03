@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch,Redirect } from 'react-router-do
 import MatchingReport from './view/MatchReport'
 import Login from './view/Login'
 import MyTask from './view/MyTask'
+import Submissions from './view/Submissions'
 import NavBar from './components/NavBar'
 
 class App extends Component {
@@ -27,6 +28,7 @@ class App extends Component {
               <Fragment>
                 <NavBar title="Plagiarism Detection System"/>
                 <Route exact path="/home" component={MyTask} />
+                <Route exact path="/student1" component={Submissions} />
                 <Route path="/report" component={MatchingReport} />
               </Fragment>
             </Switch>

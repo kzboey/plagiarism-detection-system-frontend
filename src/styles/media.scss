@@ -7,7 +7,9 @@ body {
 }
 
 span{
-    display : block
+    display : block;
+    text-align: center;
+    margin: auto;
 }
 .title{
     font-size: large;
@@ -18,4 +20,12 @@ img{
 }
 .whole-container{
   margin : 1rem
+}
+
+.pd-5 {
+  padding : 5px
+}
+
+.mg-5 {
+  margin : 5px
 }

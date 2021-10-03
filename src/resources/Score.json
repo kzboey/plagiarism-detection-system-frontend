@@ -1,0 +1,51 @@
+[
+    {
+         "author" : "Student 1",
+         "title" : "CS2231 midterm_1",
+         "similarity" : "24%",
+         "paperid" : "1234567",
+         "date" : "30-08-2021"
+    },
+    {
+        "author" : "Student 2",
+        "title" : "CS2231 midterm_1",
+        "similarity" : "13%",
+        "paperid" : "1221412",
+        "date" : "30-08-2021"
+    },
+    {
+        "author" : "Student 3",
+        "title" : "CS2231 midterm_1",
+        "similarity" : "22%",
+        "paperid" : "3463463",
+        "date" : "30-08-2021"
+    },
+    {
+        "author" : "Student 4",
+        "title" : "CS2231 midterm_1",
+        "similarity" : "65%",
+        "paperid" : "5768425",
+        "date" : "30-08-2021"
+    },
+    {
+        "author" : "Student 5",
+        "title" : "CS2231 midterm_1",
+        "similarity" : "43%",
+        "paperid" : "6422553",
+        "date" : "30-08-2021"
+    },
+    {
+        "author" : "Student 6",
+        "title" : "CS2231 midterm_1",
+        "similarity" : "55%",
+        "paperid" : "7645347",
+        "date" : "30-08-2021"
+    },
+    {
+        "author" : "Student 7",
+        "title" : "CS2231 midterm_1",
+        "similarity" : "13%",
+        "paperid" : "4672437",
+        "date" : "30-08-2021"
+    }
+]

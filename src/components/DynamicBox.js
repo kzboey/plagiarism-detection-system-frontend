@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {MATCHDATA } from '../resources/MatchData';
 import '../styles/media.scss';
 import {Container,Typography,Divider,Box,makeStyles,Button} from '@material-ui/core';

@@ -1,65 +1,71 @@
-import React, { Component, useState } from 'react';
-import {AppBar,Drawer,Toolbar,Typography,Divider,IconButton,Box} from '@material-ui/core'
+import React from 'react';
+import {makeStyles,AppBar,Drawer,Toolbar,Typography,Divider,IconButton,Box,Avatar } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
-import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
 import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { Link } from 'react-router-dom';
 import '../styles/media.scss';
+import myavatar from '../resources/avatar.jpg'; // Tell webpack this JS file uses this image
 
 const drawerWidth = 240;
 
-const styles = {
+const useStyles = makeStyles(theme => ({
     sideNav: {
         width: '15rem',      
     },
     link: {
       color: 'black',
       textDecoration: 'none',
-    }
-  };
+    },
+    rightToolbar: {
+        display : "flex",
+        marginLeft: "auto",
+        marginRight: theme.spacing(3),
+     }
+}))
 
-export default class NavBar extends Component{
-    constructor(props) {
-        super(props)   
-        this.state={
-            isSideBarOpen: false
-          }
-    }
 
-    toggleSideBar = () => {
-        this.setState({
-            isSideBarOpen: true,
-        })
-      }
+export default function NavBar(props) {
+    const classes = useStyles();
+    const [isSideBarOpen, setIsSideBarOpen] = React.useState(false);
 
-    closeSideBar = () => {
-        this.setState({
-            isSideBarOpen: false,
-        })
+    const toggleSideBar = () => {
+        setIsSideBarOpen(true);
     }
 
-    render(){
-    const { isSideBarOpen } = this.state;
+    const closeSideBar = () => {
+        setIsSideBarOpen(false);
+    }
+
     return(
         <div>
             <AppBar position="static"> 
                 <Toolbar>
-                    <IconButton onClick={this.toggleSideBar}>
+                    <IconButton onClick={toggleSideBar}>
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="title" color="inherit">
-                        {this.props.title}
+                        {props.title}
                     </Typography>
+                    
+                    <section className={classes.rightToolbar}>
+                        <Avatar alt="Avatar" src={myavatar}/>
+                        <span  className="pd-5">New User</span>
+                        <IconButton color="inherit" aria-label="Save">
+                            <LogoutIcon />
+                        </IconButton>
+                    </section>
                 </Toolbar>
             </AppBar>
             <Drawer
                 variant="temporary"
                 open={isSideBarOpen}
-                onClose={this.closeSideBar}>
-                <Box style={styles.sideNav} >
+                onClose={closeSideBar}>
+                <Box className={classes.sideNav} >
                 <List>
-                    <Link to='/home' style={styles.link}>
+                    <Link to='/home' className={classes.link}>
                         <ListItem>
                         <ListItemIcon>
                             <AccountCircleIcon/>
@@ -68,7 +74,7 @@ export default class NavBar extends Component{
                         </ListItem>
                     </Link>
                     <Divider/>
-                    <Link to='/report' style={styles.link}>
+                    <Link to='/report' className={classes.link}>
                         <ListItem>
                         <ListItemIcon>
                             <PermContactCalendarIcon/>
@@ -81,5 +87,4 @@ export default class NavBar extends Component{
             </Drawer>   
         </div>
     )
-    }
 }

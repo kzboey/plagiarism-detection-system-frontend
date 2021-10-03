@@ -1,7 +1,7 @@
 export const ASSIGNMENTS = 
 [
     {
-        title : 'Assignment1',
+        title : 'CS5487 Midterm',
         similiarity: '32%',
         dates : {
             start : '21-07-2021',
@@ -10,7 +10,7 @@ export const ASSIGNMENTS =
         }
     },
     {
-        title : 'Assignment2',
+        title : 'CS2310 Assignment1',
         similiarity: '25%',
         dates : {
             start : '21-07-2021',

@@ -15,7 +15,7 @@ export const post = (url,data) => {
         method: 'post',
         url: url,
         data: data,
-        withCredentials: true,
+        withCredentials: false,
         headers: {
             'Content-Type': 'application/json',
             'chartset': 'UTF-8',

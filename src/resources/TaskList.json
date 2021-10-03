@@ -1,0 +1,42 @@
+[
+     {
+          "id" : "CS5487",
+          "title" : "machine learning",
+          "task" : "Midterm",
+          "dates" : {
+          "start" : "21-07-2021",
+          "due" : "30-08-2021",
+          "submitted" : "11-08-2021"
+          }
+     },
+     {
+          "id" : "CS3331",
+          "title" : "Computer Programming",
+          "task" : "Assignment 1",
+          "dates" : {
+          "start" : "21-07-2021",
+          "due" : "30-08-2021",
+          "submitted" : "11-08-2021"
+          }
+     },
+     {
+          "id" : "CS3433",
+          "title" : "Computer Network",
+          "task" : "Midterm",
+          "dates" : {
+          "start" : "21-07-2021",
+          "due" : "30-08-2021",
+          "submitted" : "11-08-2021"
+          }
+     },
+     {
+          "id" : "CS2311",
+          "title" : "Operating System",
+          "task" : "Final",
+          "dates" : {
+          "start" : "21-07-2021",
+          "due" : "30-08-2021",
+          "submitted" : "11-08-2021"
+          }
+     }
+] 

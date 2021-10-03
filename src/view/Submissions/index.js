@@ -2,33 +2,34 @@ import React, { Component } from 'react'
 import {Box,Grid} from '@material-ui/core';
 import DynamicTables from '../../components/DynamicTables'
 import CustomButton from '../../components/CustomButton'
-import taskList from '../../resources/TaskList.json';
+import score from '../../resources/Score.json';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import InfoIcon from '@material-ui/icons/Info';
+import CreateIcon from '@mui/icons-material/Create';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 
-const TaskTableBody = () =>{
+const MyTableBody = () =>{
     return(
         <TableBody>
-            {taskList.map((row) => (
+            {score.map((row) => (
                 <TableRow key={row.id}  class="table-row" align="left">
                     <TableCell component="th" scope="row">
-                        {row.id}
+                        {row.author}
                     </TableCell>
-                    <TableCell component="th" scope="row" align="center"> 
+                    <TableCell align="center">
                         {row.title}
                     </TableCell>
-                    <TableCell component="th" scope="row" align="center">
-                        {row.task}
+                    <TableCell align="center">
+                        {row.similarity}
+                    </TableCell>
+                    <TableCell align="center"><CreateIcon/></TableCell>
+                    <TableCell align="center"><FileCopyIcon/></TableCell>
+                    <TableCell align="center">
+                         {row.paperid}
                     </TableCell>
                     <TableCell align="center">
-                        <span>start : {row.dates.start}</span>
-                        <span>due : {row.dates.due}</span>
-                    </TableCell>
-                    <TableCell align="center"><InfoIcon/></TableCell>
-                    <TableCell align="center">
-                        <CustomButton title="View" type="View"/>
+                         {row.date}
                     </TableCell>
                 </TableRow>
             ))}
@@ -36,18 +37,18 @@ const TaskTableBody = () =>{
     )
 }
 
-export default function TaskLists(props){
+export default function Submissions(props){
 
-    const headers = ['Course Id','Course Title','Task','Dates','Info','Actions'];
+    const headers = ['Author','Title','Similarity','Grade','File','Paper Id','Date'];
 
     return(
         <Box>
             <Grid container spacing={2} justify="center" direction="row">
                 <Grid item xs={8}>
-                    <h2>My Tasks:</h2>
+                    <h2>Submissions:</h2>
                 </Grid>
                 <Grid item xs={8}>
-                    <DynamicTables header={headers} body={<TaskTableBody/>}/>
+                    <DynamicTables header={headers} body={<MyTableBody/>}/>
                 </Grid>
             </Grid>
         </Box>
