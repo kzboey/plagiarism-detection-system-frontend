@@ -1,6 +1,7 @@
-import React from 'react';
+import React,{useEffect,useState}  from 'react';
 import {makeStyles,AppBar,Drawer,Toolbar,Typography,Divider,IconButton,Box,Avatar } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
+import AddIcon from '@mui/icons-material/Add';
 import { List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
 import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -8,6 +9,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { Link } from 'react-router-dom';
 import '../styles/media.scss';
 import myavatar from '../resources/avatar.jpg'; // Tell webpack this JS file uses this image
+import { useLocation} from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -27,9 +29,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-export default function NavBar(props) {
+export default function Navigation(props) {
     const classes = useStyles();
-    const [isSideBarOpen, setIsSideBarOpen] = React.useState(false);
+    const location = useLocation();
+    const {titles} = props;
+    const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+    const [title, setTitle] = useState(titles["/"]);
 
     const toggleSideBar = () => {
         setIsSideBarOpen(true);
@@ -39,6 +44,10 @@ export default function NavBar(props) {
         setIsSideBarOpen(false);
     }
 
+    useEffect(() => {
+        location.pathname.includes('dashboard') ? setTitle("My Dashboard") : setTitle("Plagiarism Detection System");
+     }, [location.pathname]);
+
     return(
         <div>
             <AppBar position="static"> 
@@ -47,7 +56,7 @@ export default function NavBar(props) {
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant="title" color="inherit">
-                        {props.title}
+                        {title}
                     </Typography>
                     
                     <section className={classes.rightToolbar}>
@@ -65,12 +74,21 @@ export default function NavBar(props) {
                 onClose={closeSideBar}>
                 <Box className={classes.sideNav} >
                 <List>
-                    <Link to='/home' className={classes.link}>
+                    <Link to='/class' className={classes.link}>
+                        <ListItem>
+                        <ListItemIcon>
+                            <AddIcon/>
+                        </ListItemIcon>
+                        <ListItemText primary='Create Class' />
+                        </ListItem>
+                    </Link>
+                    <Divider/>
+                    <Link to='/dashboard' className={classes.link}>
                         <ListItem>
                         <ListItemIcon>
                             <AccountCircleIcon/>
                         </ListItemIcon>
-                        <ListItemText primary='My Submission' />
+                        <ListItemText primary='My Dashboard' />
                         </ListItem>
                     </Link>
                     <Divider/>
@@ -79,7 +97,7 @@ export default function NavBar(props) {
                         <ListItemIcon>
                             <PermContactCalendarIcon/>
                         </ListItemIcon>
-                        <ListItemText primary='Report' />
+                        <ListItemText primary='My Report' />
                         </ListItem>
                     </Link>
                 </List>

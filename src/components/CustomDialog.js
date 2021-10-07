@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Paper, Dialog,DialogContent,Button } from '@material-ui/core';
 import Image from 'material-ui-image'
-import PropTypes from 'prop-types';
+
 
 export default function CustomDialog(props) {
-    const  { open, onClose, data } = props;
+  const  { open, onClose, data } = props;
 
   const handleClose = () => {
     onClose();

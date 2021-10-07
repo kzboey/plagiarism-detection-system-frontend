@@ -1,41 +1,50 @@
-import React, { Component, Fragment } from 'react';
-import { BrowserRouter as Router, Route, Switch,Redirect } from 'react-router-dom';
-import MatchingReport from './view/MatchReport'
-import Login from './view/Login'
-import MyTask from './view/MyTask'
-import Submissions from './view/Submissions'
-import NavBar from './components/NavBar'
+import React, { useEffect, Fragment } from 'react';
+import {Box,Grid,Paper} from '@material-ui/core';
+import { BrowserRouter as Router, Route, Switch,Redirect,withRouter  } from 'react-router-dom';
+import {Login} from './view/export'
+import {AppBar,Navigation} from './components/export'
+import routes from "./routes";
 
-class App extends Component {
-  
-    constructor(props) {
-      super(props)   
-    }
+const routesList = {
+  '/dashboard': 'Dashboard',
+  '/dashboard/:id': ':id',
+  '/dashboard/:id/:student': ':student',
+}
 
-    getNavBar = () => {
-      if(this.props.location.pathname !== '/' || this.props.location.pathname !== '/login'){
-        return <NavBar title="Plagiarism Detection System"/>
-      }
-    }
+const titles = {
+  "/dashboard": "My Dashboard",
+  "/dashboard/:id": "My Dashboard",
+  '/dashboard/:id/:student': 'My Dashboard',
+};
 
-    render(){
-      return (
-        <div>
-          <Router>
-            <Switch>
-              <Redirect exact from="/" to="/login" />
-              <Route exact path="/login" component={Login} />
-              <Fragment>
-                <NavBar title="Plagiarism Detection System"/>
-                <Route exact path="/home" component={MyTask} />
-                <Route exact path="/student1" component={Submissions} />
-                <Route path="/report" component={MatchingReport} />
-              </Fragment>
-            </Switch>
-          </Router>
-        </div>
-      )
-    }  
+const App = () => {
+    useEffect(() => console.log("Refresh"));
+
+    return (
+      <div>
+        <Router>
+          <Switch>
+            <Redirect exact from="/" to="/login" />
+            <Route exact path="/login" component={Login} />
+            <Fragment>
+              <AppBar titles={titles}/>
+              <Grid container justify="center" direction="row">
+                <Grid item xs={8} spacing={2} >  
+                  <Paper elevation={3} variant="elevation" rounded>
+                    <Navigation appRoutes={routesList}/>  
+                  </Paper>      
+                </Grid>
+              </Grid>
+                  {routes.map(({ path, Component }, key) => (
+                    <Route exact path={path} key={key} component={Component} /> 
+                ))}
+            </Fragment>
+          </Switch>
+        </Router>
+      </div>
+    )
 }
 
 export default App;
+
+

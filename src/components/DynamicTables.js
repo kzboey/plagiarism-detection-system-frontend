@@ -1,5 +1,4 @@
 import React from 'react';
-import { ASSIGNMENTS } from '../resources/Assignments';
 import {makeStyles} from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,7 +6,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TablePagination from "@material-ui/core/TablePagination";
 import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
 import '../styles/media.scss';
 import '../styles/table.scss';
 
@@ -19,24 +20,67 @@ const useStyles = makeStyles(theme => ({
 
 export default function DynamicTables(props){
     const classes = useStyles();
-    const assignments = ASSIGNMENTS;
-    const {header,body} = props;
+    const {headers,datas} = props;
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = event => {
+      setRowsPerPage(+event.target.value);
+      setPage(0);
+    };
 
     return(
-        <div>
+        <Box>
           <TableContainer component={Paper}>
             <Table>
               <TableHead class="table-header">
                 <TableRow>
-                  {header.map((row,index) => (
-                      index == 0 ? <TableCell align="left" component="th">{row}</TableCell> : <TableCell align="center" component="th">{row}</TableCell>
+                    {headers.map(header => (
+                      <TableCell
+                        key={header.id}
+                        align={header.align}
+                      >
+                        {header.label}
+                      </TableCell>
                   ))}
                 </TableRow>
               </TableHead>
-              {body}
+              <TableBody>
+                {datas
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(data => {
+                    return (
+                      <TableRow hover tabIndex={-1}  class="table-row">
+                        {headers.map(header => {
+                          const value = data[header.id];
+                          return (
+                            <TableCell key={header.id} align={header.align}>
+                              {header.format && typeof value === "number" 
+                                ? header.format(value)
+                                : value}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+              </TableBody>
             </Table>
           </TableContainer>
-        </div>
+          <TablePagination
+            rowsPerPageOptions={[10, 15, 20, 25, 50, 100]}
+            component="div"
+            count={datas.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </Box>
     )
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import {TextField,Grid,Paper,Typography,Link,} from "@material-ui/core";
 import './index.scss';
-import CustomButton from '../../components/CustomButton'
+import {CustomButton} from '../../components/export'
 import {get,post} from '../../util/HttpRequest'
 import AppConfig from '../../util/AppConfig.js';
 
@@ -19,15 +19,10 @@ class Login extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        // if (this.state.username == 'admin' && this.state.password == 'admin') {
-        //     this.props.history.push("/home");
-        // } else {
-        //     alert('Incorrect Credntials!');}
-        // }
         //login implementation
         post(AppConfig.getAPI('login'),{}).then(resp =>{
             if(resp.status == 0){
-                this.props.history.push("/home");
+                this.props.history.push("/dashboard");
             }
         })    
     }

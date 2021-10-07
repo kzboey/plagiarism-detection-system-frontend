@@ -1,53 +1,45 @@
-import React, { Component } from 'react'
-import {Box,Grid} from '@material-ui/core';
-import DynamicTables from '../../components/DynamicTables'
-import CustomButton from '../../components/CustomButton'
+import React from 'react'
+import {Box,Grid,Paper} from '@material-ui/core';
+import {DynamicTables,CustomButton,Navigation} from '../../components/export'
 import taskList from '../../resources/TaskList.json';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
 import InfoIcon from '@material-ui/icons/Info';
 
-const TaskTableBody = () =>{
-    return(
-        <TableBody>
-            {taskList.map((row) => (
-                <TableRow key={row.id}  class="table-row" align="left">
-                    <TableCell component="th" scope="row">
-                        {row.id}
-                    </TableCell>
-                    <TableCell component="th" scope="row" align="center"> 
-                        {row.title}
-                    </TableCell>
-                    <TableCell component="th" scope="row" align="center">
-                        {row.task}
-                    </TableCell>
-                    <TableCell align="center">
-                        <span>start : {row.dates.start}</span>
-                        <span>due : {row.dates.due}</span>
-                    </TableCell>
-                    <TableCell align="center"><InfoIcon/></TableCell>
-                    <TableCell align="center">
-                        <CustomButton title="View" type="View"/>
-                    </TableCell>
-                </TableRow>
-            ))}
-        </TableBody>
-    )
+//Define header label
+const headers = [
+    {id : "id", label : "Course Id", align: "left", format: value => value.toLocaleString()},
+    {id : "title", label : "Course Title", align: "center", format: value => value.toLocaleString()},
+    {id : "task", label : "Task", align: "center",format: value => value.toLocaleString()},
+    {id : "start", label : "Start Date", align: "center",format: value => value.toLocaleString()},
+    {id : "due", label : "Due Date", align: "center",format: value => value.toLocaleString()},
+    {id : "info", label : "Info", align: "center"},
+    {id : "action", label : "Actions", align: "center"}
+]
+
+function createData(id, title, task, start, due, info, action ) {
+    return { id, title, task, start, due, info,action };
 }
 
 export default function TaskLists(props){
 
-    const headers = ['Course Id','Course Title','Task','Dates','Info','Actions'];
+    const handleClick = (id) => {
+        var url = "/dashboard/"+id;
+        props.history.push(url);
+    }
+    //row item value for data table
+    const rows = taskList.map(item =>
+        createData(item.id, item.title, item.task, item.dates.start, item.dates.due, <InfoIcon/>, <CustomButton title="View" type="button" onPress={() => { handleClick(item.id)}}/>)   //pass handleClick function to custombutton component
+    );
 
     return(
         <Box>
             <Grid container spacing={2} justify="center" direction="row">
-                <Grid item xs={8}>
-                    <h2>My Tasks:</h2>
+                <Grid item xs={8}>   
+                    <h2>My Tasks:</h2>               
                 </Grid>
                 <Grid item xs={8}>
-                    <DynamicTables header={headers} body={<TaskTableBody/>}/>
+                    <Paper>
+                        <DynamicTables headers={headers} datas={rows}/>
+                    </Paper>   
                 </Grid>
             </Grid>
         </Box>
