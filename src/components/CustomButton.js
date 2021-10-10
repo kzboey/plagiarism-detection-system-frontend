@@ -18,27 +18,27 @@ const useStyles = makeStyles(theme => ({
       }
 }))
 
-function SignInButton(props){
+export const SubmitButton = props =>{
     const classes = useStyles();
-    const {title,type,onPress} = props;
+    const {title,type,onPress,...other} = props;
     
     return(
         <Button
             color="primary"
             size="medium"
             variant="contained"
-            fullWidth
             className={classes.buttonBlock}
             type={type}
-            onClick={onPress}>
+            onClick={onPress}
+            {...other}>
             {title}
         </Button>
     )
 }
 
-function MyButton(props){
+export const ConfirmButton = props => {
     const classes = useStyles();
-    const {title,type,onPress} = props;
+    const {title,type,onPress,...other} = props;
     
     return(
         <Button
@@ -48,14 +48,15 @@ function MyButton(props){
             component="span"
             className={classes.buttonBlock}
             type="button"
-            onClick={onPress}>
+            onClick={onPress}
+            {...other}>
             {title}
         </Button>
     )
 }
 
-function UploadButton(props){
-    const {title,type,onPress} = props;
+export const UploadButton = props =>{
+    const {title,type,onPress,...other} = props;
     return (
         <div style={{ display: 'inline' }}>
             <input
@@ -65,20 +66,8 @@ function UploadButton(props){
                 id="uploadButton"
             />
             <label htmlFor="uploadButton">
-                <MyButton title={title} type={type} onClick={onPress}/>
+                <Button title={title} type={type} onClick={onPress} {...other}/>
             </label>
         </div>
     )
-}
-
-export default function CustomButton(props){
-    const {title,type, onPress} = props;
-
-    if(type=='upload'){
-        return <UploadButton title={title} type={type} onPress={onPress}/>
-    }else if(type=='submit'){
-        return <SignInButton title={title} type={type} onPress={onPress}/>
-    }else{
-        return <MyButton title={title} type={type} onPress={onPress}/>
-    }
 }

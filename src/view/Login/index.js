@@ -1,7 +1,7 @@
 import React from "react";
 import {TextField,Grid,Paper,Typography,Link,} from "@material-ui/core";
 import './index.scss';
-import {CustomButton} from '../../components/export'
+import {SubmitButton} from '../../components/export'
 import {get,post} from '../../util/HttpRequest'
 import AppConfig from '../../util/AppConfig.js';
 
@@ -87,7 +87,7 @@ class Login extends React.Component {
                                 />
                             </Grid>
                             <Grid item>
-                                <CustomButton title="Submit" type="submit" />
+                                <SubmitButton title="Submit" type="submit" fullWidth="true"/>
                             </Grid>
                         </Grid>
                         </form>

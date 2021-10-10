@@ -1,6 +1,6 @@
 import React from 'react'
 import {Box,Grid,Paper,IconButton} from '@material-ui/core';
-import {DynamicTables,CustomButton,Navigation} from '../../components/export'
+import {DynamicTables,ConfirmButton} from '../../components/export'
 import score from '../../resources/Score.json';
 import CreateIcon from '@mui/icons-material/Create';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
@@ -57,7 +57,7 @@ export default function Submissions(props){
                 </Grid>
                 <Grid item xs={2} alignItems="right">
                     <Paper class="grid-right">
-                        <CustomButton title="upload" type="upload"/>
+                        <ConfirmButton title="upload" type="upload"/>
                     </Paper> 
                 </Grid>
                 <Grid item xs={8}>

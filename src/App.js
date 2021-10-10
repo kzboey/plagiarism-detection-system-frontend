@@ -1,17 +1,19 @@
 import React, { useEffect, Fragment } from 'react';
 import {Box,Grid,Paper} from '@material-ui/core';
-import { BrowserRouter as Router, Route, Switch,Redirect,withRouter  } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch,Redirect} from 'react-router-dom';
 import {Login} from './view/export'
 import {AppBar,Navigation} from './components/export'
 import routes from "./routes";
 
 const routesList = {
+  '/task': 'New Task',
   '/dashboard': 'Dashboard',
   '/dashboard/:id': ':id',
   '/dashboard/:id/:student': ':student',
 }
 
 const titles = {
+  '/task': 'New Task',
   "/dashboard": "My Dashboard",
   "/dashboard/:id": "My Dashboard",
   '/dashboard/:id/:student': 'My Dashboard',

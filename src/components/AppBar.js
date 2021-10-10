@@ -2,6 +2,7 @@ import React,{useEffect,useState}  from 'react';
 import {makeStyles,AppBar,Drawer,Toolbar,Typography,Divider,IconButton,Box,Avatar } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@mui/icons-material/Add';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
 import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -29,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-export default function Navigation(props) {
+export default function Header(props) {
     const classes = useStyles();
     const location = useLocation();
     const {titles} = props;
@@ -74,12 +75,12 @@ export default function Navigation(props) {
                 onClose={closeSideBar}>
                 <Box className={classes.sideNav} >
                 <List>
-                    <Link to='/class' className={classes.link}>
+                    <Link to='/task' className={classes.link}>
                         <ListItem>
                         <ListItemIcon>
                             <AddIcon/>
                         </ListItemIcon>
-                        <ListItemText primary='Create Class' />
+                        <ListItemText primary='Create Task' />
                         </ListItem>
                     </Link>
                     <Divider/>
@@ -95,9 +96,9 @@ export default function Navigation(props) {
                     <Link to='/report' className={classes.link}>
                         <ListItem>
                         <ListItemIcon>
-                            <PermContactCalendarIcon/>
+                            <SettingsIcon/>
                         </ListItemIcon>
-                        <ListItemText primary='My Report' />
+                        <ListItemText primary='Settings' />
                         </ListItem>
                     </Link>
                 </List>

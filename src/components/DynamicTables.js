@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function DynamicTables(props){
     const classes = useStyles();
-    const {headers,datas} = props;
+    const {headers,datas, ...rest} = props;
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
   

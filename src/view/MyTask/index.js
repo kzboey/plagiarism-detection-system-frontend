@@ -1,6 +1,6 @@
 import React from 'react'
 import {Box,Grid,Paper} from '@material-ui/core';
-import {DynamicTables,CustomButton,Navigation} from '../../components/export'
+import {DynamicTables,ConfirmButton} from '../../components/export'
 import taskList from '../../resources/TaskList.json';
 import InfoIcon from '@material-ui/icons/Info';
 
@@ -27,12 +27,12 @@ export default function TaskLists(props){
     }
     //row item value for data table
     const rows = taskList.map(item =>
-        createData(item.id, item.title, item.task, item.dates.start, item.dates.due, <InfoIcon/>, <CustomButton title="View" type="button" onPress={() => { handleClick(item.id)}}/>)   //pass handleClick function to custombutton component
+        createData(item.id, item.title, item.task, item.dates.start, item.dates.due, <InfoIcon/>, <ConfirmButton title="View" type="button" onPress={() => { handleClick(item.id)}}/>)   //pass handleClick function to custombutton component
     );
 
     return(
         <Box>
-            <Grid container spacing={2} justify="center" direction="row">
+            <Grid container spacing={4} justify="center" direction="row">
                 <Grid item xs={8}>   
                     <h2>My Tasks:</h2>               
                 </Grid>
