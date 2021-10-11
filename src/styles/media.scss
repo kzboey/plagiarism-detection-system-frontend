@@ -1,0 +1,56 @@
+//common css for all pages
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #ecf0f1;
+}
+
+span{
+    display : block;
+    text-align: center;
+    margin: auto;
+}
+.title{
+    font-size: large;
+    color: brown;
+}
+img{
+    max-width: 100%;
+}
+.whole-container{
+  margin : 1rem
+}
+
+.pd-5 {
+  padding : 5px
+}
+
+.mg-5 {
+  margin : 5px
+}
+
+//navigation
+ul.breadcrumb {
+  border-radius: 25px;
+  padding: 10px 16px;
+  list-style: none;
+  background-color: inherit;
+}
+ul.breadcrumb li {
+  display: inline;
+  font-size: 18px;
+}
+ul.breadcrumb li+li:before {
+  padding: 8px;
+  color: black;
+  content: "/\00a0";
+}
+ul.breadcrumb li a {
+  color: #0275d8;
+  text-decoration: none;
+}
+ul.breadcrumb li a:hover {
+  color: #01447e;
+  text-decoration: underline;
+}
