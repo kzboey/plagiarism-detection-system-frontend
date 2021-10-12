@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {makeStyles} from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,21 +9,43 @@ import TableRow from '@material-ui/core/TableRow';
 import TablePagination from "@material-ui/core/TablePagination";
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
+import SearchBar from "material-ui-search-bar";
 import '../styles/media.scss';
 import '../styles/table.scss';
 
-//overriding style
-const useStyles = makeStyles(theme => ({ 
-
+const useStyles = makeStyles(theme => ({
+  searchBar : {
+    marginBottom : '12px'
+  }
 }))
-
 
 export default function DynamicTables(props){
     const classes = useStyles();
     const {headers,datas, ...rest} = props;
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rows, setRows] = useState(datas);
+    const [searched, setSearched] = useState("");
+
+    const requestSearch = (searchedVal) => {
+      const filteredRows = datas.filter((row) => {
+        for(var i =0; i<headers.length; i++){
+          if(typeof row[headers[i].id] === 'string'){
+            let result = row[headers[i].id].toLowerCase().includes(searchedVal.toLowerCase());
+            if(result){
+              return true;
+            }
+          }    
+        }
+      });
+      setRows(filteredRows);
+    };
+
+    const cancelSearch = () => {
+      setSearched("");
+      requestSearch(searched);
+    };
+
     const handleChangePage = (event, newPage) => {
       setPage(newPage);
     };
@@ -35,6 +57,13 @@ export default function DynamicTables(props){
 
     return(
         <Box>
+          <SearchBar
+            className={classes.searchBar} 
+            value={searched}
+            onChange={(searchVal) => requestSearch(searchVal)}
+            onCancelSearch={() => cancelSearch()}
+          />
+          <Paper>
           <TableContainer component={Paper}>
             <Table>
               <TableHead class="table-header">
@@ -50,13 +79,13 @@ export default function DynamicTables(props){
                 </TableRow>
               </TableHead>
               <TableBody>
-                {datas
+                {rows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map(data => {
+                  .map(row => {
                     return (
                       <TableRow hover tabIndex={-1}  class="table-row">
                         {headers.map(header => {
-                          const value = data[header.id];
+                          const value = row[header.id];
                           return (
                             <TableCell key={header.id} align={header.align}>
                               {header.format && typeof value === "number" 
@@ -80,6 +109,7 @@ export default function DynamicTables(props){
             onChangePage={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
           />
+          </Paper>
         </Box>
     )
 }

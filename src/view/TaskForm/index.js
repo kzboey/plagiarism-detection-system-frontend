@@ -1,6 +1,6 @@
 import React from 'react'
 import {TaskForm} from './form.js'
-import {makeStyles,Grid,Paper,Typography,Card,CardHeader} from "@material-ui/core";
+import {makeStyles,Grid,Card,CardHeader} from "@material-ui/core";
 import {SubmitButton} from '../../components/export'
 
 const useStyle = makeStyles((theme) => ({

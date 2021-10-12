@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Chip} from '@material-ui/core';
-import HomeIcon from '@mui/icons-material/Home';
 import Breadcrumbs  from 'react-router-dynamic-breadcrumbs';  
 import '../styles/media.scss';
 

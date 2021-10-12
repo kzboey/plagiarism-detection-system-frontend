@@ -15,10 +15,11 @@ table {
 .table-header {
 	background:rg#acc8db(129, 129, 129);
 	padding:($half-spacing-unit * 1.5) 0;
-    background-color: #acc8dd;
+    background-color: #b01861;
     th {
         font-size: 1.0rem;
         font-weight: bold;
+        color: #fff;
     }
 }
 

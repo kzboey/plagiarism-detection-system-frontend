@@ -1,23 +1,24 @@
 import React from 'react'
-import {Box,Grid,Paper,IconButton} from '@material-ui/core';
-import {DynamicTables,ConfirmButton} from '../../components/export'
+import {Box,Grid,Paper} from '@material-ui/core';
+import {DynamicTables,UploadButton,IconButton} from '../../components/export'
 import score from '../../resources/Score.json';
 import CreateIcon from '@mui/icons-material/Create';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
+import ButtonGroup  from '@material-ui/core/ButtonGroup';
+import DeleteIcon from "@material-ui/icons/Delete";
 import './index.scss';
 
 const headers = [
     {id : "author", label : "Author", align: "left", format: value => value.toLocaleString()},
     {id : "title", label : "Title", align: "center", format: value => value.toLocaleString()},
     {id : "similarity", label : "Similarity", align: "center",format: value => value.toLocaleString()},
-    {id : "grade", label : "Grade", align: "center",format: value => value.toLocaleString()},
-    {id : "file", label : "File", align: "center",format: value => value.toLocaleString()},
     {id : "pid", label : "Paper Id", align: "center"},
-    {id : "date", label : "Date", align: "center"}
+    {id : "date", label : "Date", align: "center"},
+    {id : "action", label : "Actions", align: "center"}
 ]
 
-function createData(author, title, similarity, grade, file, pid, date ) {
-    return { author, title, similarity, grade, file, pid, date };
+function createData(author, title, similarity, pid, date, action ) {
+    return { author, title, similarity, pid, date, action };
 }
 
 
@@ -38,32 +39,33 @@ export default function Submissions(props){
             item.author,
             item.title, 
             item.similarity, 
-            <CreateIcon/>, 
-            <IconButton onClick={() => { handleClick(item.paperid)}}>
-                <FileCopyIcon/>
-            </IconButton>, 
             item.paperid, 
-            item.date)
+            item.date,
+            <ButtonGroup variant="outlined">
+                <IconButton tips="view report" handleClick={() => { handleClick(item.paperid)}}>
+                    <FileCopyIcon/>
+                </IconButton>
+                <IconButton tips="delete" >
+                    <DeleteIcon/>
+                </IconButton>
+            </ButtonGroup>
+            )
     );
 
 
     return(
         <Box>
             <Grid container spacing={2} justify="center" alignItems="center" direction="row" className="submission-container">
-                <Grid item xs={6} alignItems="left">
-                    <Paper class="grid-left" > 
-                        <h2>Submissions:</h2>
-                    </Paper>       
+                <Grid item xs={6} alignItems="left" >
+                    <h2>Submissions:</h2>     
                 </Grid>
                 <Grid item xs={2} alignItems="right">
                     <Paper class="grid-right">
-                        <ConfirmButton title="upload" type="upload"/>
+                        <UploadButton title="upload" type="upload"/>
                     </Paper> 
                 </Grid>
                 <Grid item xs={8}>
-                    <Paper>
-                        <DynamicTables headers={headers} datas={rows}/>
-                    </Paper> 
+                    <DynamicTables headers={headers} datas={rows}/>
                 </Grid>
             </Grid>
         </Box>

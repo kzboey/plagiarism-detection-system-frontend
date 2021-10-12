@@ -20,7 +20,6 @@ export function TaskForm() {
 
     return (
         <Box>
-
             <form id="task-form" onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>

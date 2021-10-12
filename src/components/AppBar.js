@@ -15,6 +15,9 @@ import { useLocation} from "react-router-dom";
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
+    appbackground : {
+        background : 'linear-gradient(90deg,#6B203E 0%,#BF165E 100%)'
+    },
     sideNav: {
         width: '15rem',      
     },
@@ -51,7 +54,7 @@ export default function Header(props) {
 
     return(
         <div>
-            <AppBar position="static"> 
+            <AppBar position="static" className={classes.appbackground}> 
                 <Toolbar>
                     <IconButton onClick={toggleSideBar}>
                         <MenuIcon/>

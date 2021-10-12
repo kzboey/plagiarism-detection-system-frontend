@@ -6,6 +6,14 @@ body {
   background: #ecf0f1;
 }
 
+h2 {
+  font-size : 1.8rem;
+  font-weight : 500;
+  border-bottom : 1.5px solid #bf165e;
+  color : #bf165e;
+  padding-bottom : 0.5rem;
+}
+
 span{
     display : block;
     text-align: center;
@@ -30,6 +38,7 @@ img{
   margin : 5px
 }
 
+
 //navigation
 ul.breadcrumb {
   border-radius: 25px;
@@ -47,10 +56,10 @@ ul.breadcrumb li+li:before {
   content: "/\00a0";
 }
 ul.breadcrumb li a {
-  color: #0275d8;
+  color: #bf165e;
   text-decoration: none;
 }
 ul.breadcrumb li a:hover {
-  color: #01447e;
+  color: #9b0646;
   text-decoration: underline;
 }

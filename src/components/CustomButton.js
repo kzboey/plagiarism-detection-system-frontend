@@ -3,6 +3,7 @@ import {Button,makeStyles} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     buttonBlock : {
+        backgroundColor : '#bf165e',
         margin : '0.2rem',
         borderRadius: '10px',
         fontWeight: '600',
@@ -56,6 +57,7 @@ export const ConfirmButton = props => {
 }
 
 export const UploadButton = props =>{
+    const classes = useStyles();
     const {title,type,onPress,...other} = props;
     return (
         <div style={{ display: 'inline' }}>
@@ -66,7 +68,17 @@ export const UploadButton = props =>{
                 id="uploadButton"
             />
             <label htmlFor="uploadButton">
-                <Button title={title} type={type} onClick={onPress} {...other}/>
+                <Button
+                    color="secondary"
+                    size="medium"
+                    variant="contained"
+                    className={classes.buttonBlock}
+                    type={type}
+                    onClick={onPress}
+                    component="span"
+                    {...other}>
+                    {title}
+                </Button>
             </label>
         </div>
     )
