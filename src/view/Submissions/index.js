@@ -1,8 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Box,Grid,Paper} from '@material-ui/core';
-import {DynamicTables,UploadButton,IconButton} from '../../components/export'
+import {DynamicTables,UploadButton,IconButton,ConfirmDialog} from '../../components/export'
 import score from '../../resources/Score.json';
-import CreateIcon from '@mui/icons-material/Create';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import ButtonGroup  from '@material-ui/core/ButtonGroup';
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -23,8 +22,15 @@ function createData(author, title, similarity, pid, date, action ) {
 
 
 export default function Submissions(props){
-    //const params = useParams();
-    const breadcrumItem = props.match.params.id;;
+    const [openConfirm, setOpenConfirm] = useState(false);
+
+    const handleClickOpenConfirm = () => {
+        setOpenConfirm(true);
+    };
+
+    const handleRemove = () => {
+        //api delete data in db
+    };
 
     const handleClick = (pid) => {
         let current_path = props.location.pathname;
@@ -45,7 +51,7 @@ export default function Submissions(props){
                 <IconButton tips="view report" handleClick={() => { handleClick(item.paperid)}}>
                     <FileCopyIcon/>
                 </IconButton>
-                <IconButton tips="delete" >
+                <IconButton tips="delete" handleClick={handleClickOpenConfirm}>
                     <DeleteIcon/>
                 </IconButton>
             </ButtonGroup>
@@ -68,6 +74,14 @@ export default function Submissions(props){
                     <DynamicTables headers={headers} datas={rows}/>
                 </Grid>
             </Grid>
+            <ConfirmDialog
+                title="Delete Data?"
+                open={openConfirm}
+                onClose={() => setOpenConfirm(false)}
+                onConfirm={handleRemove}
+            >
+                Are you sure you want to delete this Data?
+            </ConfirmDialog>
         </Box>
     )
 }

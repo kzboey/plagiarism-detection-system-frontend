@@ -1,6 +1,6 @@
-import React from 'react'
-import {Box,Grid,Paper} from '@material-ui/core';
-import {DynamicTables,ConfirmButton,IconButton, CustomDialog} from '../../components/export'
+import React, {useState} from 'react'
+import {Box,Grid} from '@material-ui/core';
+import {DynamicTables,IconButton, CustomDialog,ConfirmDialog} from '../../components/export'
 import taskList from '../../resources/TaskList.json';
 import ButtonGroup  from '@material-ui/core/ButtonGroup';
 import EditIcon from "@material-ui/icons/Edit";                                 
@@ -23,10 +23,19 @@ function createData(id, title, task, start, due, action ) {
 }
 
 export default function TaskLists(props){
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [openConfirm, setOpenConfirm] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
+    };
+
+    const handleClickOpenConfirm = () => {
+        setOpenConfirm(true);
+    };
+
+    const handleRemove = () => {
+        //api delete data in db
     };
 
     const handleClick = (id) => {
@@ -44,7 +53,7 @@ export default function TaskLists(props){
                 <IconButton tips="edit" handleClick={handleClickOpen}>
                     <EditIcon/>
                 </IconButton>
-                <IconButton tips="delete" >
+                <IconButton tips="delete" handleClick={handleClickOpenConfirm}>
                     <DeleteIcon/>
                 </IconButton>
             </ButtonGroup>
@@ -67,6 +76,14 @@ export default function TaskLists(props){
             >
                 <TaskForm/>
             </CustomDialog>
+            <ConfirmDialog
+                title="Delete Data?"
+                open={openConfirm}
+                onClose={() => setOpenConfirm(false)}
+                onConfirm={handleRemove}
+            >
+                Are you sure you want to delete this Data?
+            </ConfirmDialog>
         </Box>
     )
 }

@@ -5,4 +5,5 @@ export { default as DynamicBox } from './DynamicBox';
 export { default as DynamicTables } from './DynamicTables';
 export { default as Navigation } from './Navigation';
 export { default as IconButton } from './IconButton';
+export { default as ConfirmDialog } from './ConfirmDialog';
 export * from './CustomForm';
