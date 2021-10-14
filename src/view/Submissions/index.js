@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
-import {Box,Grid,Paper} from '@material-ui/core';
+import {Box,Grid} from '@material-ui/core';
 import {DynamicTables,UploadButton,IconButton,ConfirmDialog} from '../../components/export'
 import score from '../../resources/Score.json';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import ButtonGroup  from '@material-ui/core/ButtonGroup';
 import DeleteIcon from "@material-ui/icons/Delete";
-import './index.scss';
+import '../../styles/media.scss';
 
 const headers = [
     {id : "author", label : "Author", align: "left", format: value => value.toLocaleString()},
@@ -35,7 +35,6 @@ export default function Submissions(props){
     const handleClick = (pid) => {
         let current_path = props.location.pathname;
         let url = current_path +"/"+pid;
-        console.log(url);
         props.history.push(url);
     }
 
@@ -61,14 +60,12 @@ export default function Submissions(props){
 
     return(
         <Box>
-            <Grid container spacing={2} justify="center" alignItems="center" direction="row" className="submission-container">
-                <Grid item xs={6} alignItems="left" >
+            <Grid container spacing={2} justify="center" alignItems="center" direction="row">
+                <Grid item xs={8} className="title-row">
                     <h2>Submissions:</h2>     
                 </Grid>
-                <Grid item xs={2} alignItems="right">
-                    <Paper class="grid-right">
-                        <UploadButton title="upload" type="upload"/>
-                    </Paper> 
+                <Grid item xs={8} className="button-row">
+                    <UploadButton title="upload" type="upload"/>               
                 </Grid>
                 <Grid item xs={8}>
                     <DynamicTables headers={headers} datas={rows}/>

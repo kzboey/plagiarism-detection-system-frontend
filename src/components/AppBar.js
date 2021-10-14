@@ -1,5 +1,5 @@
 import React,{useEffect,useState}  from 'react';
-import {makeStyles,AppBar,Drawer,Toolbar,Typography,Divider,IconButton,Box,Avatar } from '@material-ui/core'
+import {makeStyles,AppBar,Drawer,Toolbar,Typography,Divider,Box,Avatar } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -11,8 +11,8 @@ import { Link } from 'react-router-dom';
 import '../styles/media.scss';
 import myavatar from '../resources/avatar.jpg'; // Tell webpack this JS file uses this image
 import { useLocation} from "react-router-dom";
-
-const drawerWidth = 240;
+import {IconButton} from './export'
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
     appbackground : {
@@ -29,11 +29,15 @@ const useStyles = makeStyles(theme => ({
         display : "flex",
         marginLeft: "auto",
         marginRight: theme.spacing(3),
+     },
+     appbarTitle: { 
+        marginLeft : '2em'
      }
 }))
 
 
 export default function Header(props) {
+    let history = useHistory();
     const classes = useStyles();
     const location = useLocation();
     const {titles} = props;
@@ -48,6 +52,10 @@ export default function Header(props) {
         setIsSideBarOpen(false);
     }
 
+    const handleLogout = () => {
+        history.push("/login");
+    }
+
     useEffect(() => {
         location.pathname.includes('dashboard') ? setTitle("My Dashboard") : setTitle("Plagiarism Detection System");
      }, [location.pathname]);
@@ -56,17 +64,19 @@ export default function Header(props) {
         <div>
             <AppBar position="static" className={classes.appbackground}> 
                 <Toolbar>
-                    <IconButton onClick={toggleSideBar}>
+                   
+                    {/* <IconButton onClick={toggleSideBar}>
                         <MenuIcon/>
-                    </IconButton>
-                    <Typography variant="title" color="inherit">
-                        {title}
+                    </IconButton> */}
+
+                    <Typography variant="title" color="inherit" className={classes.appbarTitle}>
+                        Plagiarism Detection System
                     </Typography>
                     
                     <section className={classes.rightToolbar}>
                         <Avatar alt="Avatar" src={myavatar}/>
                         <span  className="pd-5">New User</span>
-                        <IconButton color="inherit" aria-label="Save">
+                        <IconButton tips="Logout" color="inherit" aria-label="Save" handleClick={handleLogout}>
                             <LogoutIcon />
                         </IconButton>
                     </section>

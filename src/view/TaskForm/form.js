@@ -6,17 +6,32 @@ import {
 } from "@material-ui/core";
 import DateFnsUtils from '@date-io/date-fns';
 import { Controller, useForm } from "react-hook-form";
-import { MuiPickersUtilsProvider,DateTimePicker } from "@material-ui/pickers";
+import { MuiPickersUtilsProvider,DateTimePicker as MuiDateTimePicker } from "@material-ui/pickers";
+import {formatDate} from '../../util/DateUtil'
 
-export function TaskForm() {
-    const { control, handleSubmit } = useForm({
-        value : ""
-    });
-    const [selectedDate, handleDateChange] = useState(new Date());
+export function TaskForm(props) {
+    const {data} = props;
+    const { control, handleSubmit } = useForm({});
+    const [startDate, setStartDate] = useState(data != undefined ? new Date(data.start_date) : formatDate(new Date()));
+    const [endDate, setEndDate] = useState(data != undefined ? new Date(data.end_date) : formatDate(new Date()));
+
     const onSubmit = (values) => {
+        values.id = values.id !== undefined ? values.id : "";
+        values.title = values.title !== undefined ? values.title : "";
+        values.task = values.task !== undefined ? values.id : "";
+        values.start_date = values.start_date !== undefined ? values.start_date : "";
+        values.end_date = values.end_date !== undefined ? values.end_date : "";
         console.log(JSON.stringify(values));
         //post to backend
     }
+
+    const handleStartDateChange = (newStartDate) => {
+        setStartDate(newStartDate);
+    };
+
+    const handleEndDateChange = (newEndDate) => {
+        setEndDate(newEndDate);
+    };
 
     return (
         <Box>
@@ -34,7 +49,8 @@ export function TaskForm() {
                                     placeholder="Course Id"
                                     fullWidth
                                     name="id"
-                                    variant="outlined" 
+                                    variant="outlined"
+                                    defaultValue = {data !== undefined ? data.id : ""}
                                 />
                             )}
                         />
@@ -51,7 +67,8 @@ export function TaskForm() {
                                 placeholder="Course Id"
                                 fullWidth
                                 name="title"
-                                variant="outlined" />
+                                variant="outlined"
+                                defaultValue = {data !== undefined ? data.title : ""} />
                             )}
                         />
                     </Grid>
@@ -68,7 +85,8 @@ export function TaskForm() {
                                 fullWidth
                                 name="task"
                                 helperText="eg: midterm, final"
-                                variant="outlined" />
+                                variant="outlined" 
+                                defaultValue = {data !== undefined ? data.task : ""}/>
                             )}
                         />
                     </Grid>
@@ -78,13 +96,14 @@ export function TaskForm() {
                             name="start_date"
                             render={({ field }) => (
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <DateTimePicker 
+                                    <MuiDateTimePicker 
                                         {...field}
                                         label="Start Date"
                                         inputVariant="outlined"
                                         fullWidth
-                                        value={selectedDate}
-                                        onChange={handleDateChange}
+                                        value={startDate}
+                                        onChange={handleStartDateChange}
+                                        format='yyyy-MM-dd HH:mm:ss'
                                          />
                                 </MuiPickersUtilsProvider>
                             )}
@@ -96,14 +115,15 @@ export function TaskForm() {
                             name="end_date"
                             render={({ field }) => (
                                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <DateTimePicker 
+                                    <MuiDateTimePicker 
                                         {...field}
                                         label="End Date"
                                         inputVariant="outlined"
                                         fullWidth
-                                        value={selectedDate}
-                                        onChange={handleDateChange}
-                                        />
+                                        value={endDate}
+                                        onChange={handleEndDateChange}
+                                        format='yyyy-MM-dd HH:mm:ss'
+                                         />
                                 </MuiPickersUtilsProvider>
                             )}
                         />

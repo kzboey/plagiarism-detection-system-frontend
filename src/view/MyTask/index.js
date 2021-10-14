@@ -1,12 +1,13 @@
 import React, {useState} from 'react'
 import {Box,Grid} from '@material-ui/core';
-import {DynamicTables,IconButton, CustomDialog,ConfirmDialog} from '../../components/export'
+import {DynamicTables,IconButton, ConfirmDialog,FormDialog,SubmitButton,CustomSnackbar} from '../../components/export'
 import taskList from '../../resources/TaskList.json';
 import ButtonGroup  from '@material-ui/core/ButtonGroup';
 import EditIcon from "@material-ui/icons/Edit";                                 
 import DeleteIcon from "@material-ui/icons/Delete";
 import PreviewIcon from '@mui/icons-material/Preview';
 import {TaskForm} from '../TaskForm/form.js'
+import '../../styles/media.scss';
 
 //Define header label
 const headers = [
@@ -24,9 +25,21 @@ function createData(id, title, task, start, due, action ) {
 
 export default function TaskLists(props){
     const [open, setOpen] = useState(false);
+    const [dialogTitle , setDialogTitle] = useState("Create Task");
+    const [formData, setFormData] = useState("");
     const [openConfirm, setOpenConfirm] = useState(false);
+    const [openAlert, setOpenAlert] = useState(false);
+    const [alertType, setAlertType] = useState('info');
+    const [alertMessage, setOpenMessage] = useState('');
 
-    const handleClickOpen = () => {
+    const handleClickOpenCreate = () => {
+        setDialogTitle("Create Task");
+        setOpen(true);
+    };
+
+    const handleClickOpenEdit = (item) => {
+        setDialogTitle("Edit Task");
+        setFormData(item);
         setOpen(true);
     };
 
@@ -34,8 +47,14 @@ export default function TaskLists(props){
         setOpenConfirm(true);
     };
 
+    const handleEdit = (values) => {
+        //api edit data in db
+        setOpenAlert(true);
+    };
+
     const handleRemove = () => {
         //api delete data in db
+        //setOpenAlert(true);
     };
 
     const handleClick = (id) => {
@@ -45,12 +64,12 @@ export default function TaskLists(props){
     //row item value for data table
     const rows = taskList.map(item =>
         createData(
-            item.id, item.title, item.task, item.dates.start, item.dates.due, 
+            item.id, item.title, item.task, item.start_date, item.end_date, 
             <ButtonGroup variant="outlined">
                 <IconButton tips="view submissions" handleClick={() => { handleClick(item.id)}}>
                     <PreviewIcon/>
                 </IconButton>
-                <IconButton tips="edit" handleClick={handleClickOpen}>
+                <IconButton tips="edit" handleClick={() => { handleClickOpenEdit(item)}}>
                     <EditIcon/>
                 </IconButton>
                 <IconButton tips="delete" handleClick={handleClickOpenConfirm}>
@@ -62,20 +81,30 @@ export default function TaskLists(props){
 
     return(
         <Box>
-            <Grid container spacing={4} justify="center" direction="row">
-                <Grid item xs={8}>   
+            <CustomSnackbar 
+                type="success" 
+                message="create task successful!"
+                open={openAlert}
+                onClose={() => setOpenAlert(false)}/>
+            <Grid container spacing={2} justify="center" direction="row">
+                <Grid item xs={8} className="title-row">   
                     <h2>My Tasks:</h2>               
+                </Grid>
+                <Grid item xs={8} className="button-row">
+                    <SubmitButton title="New Task" type="upload" onPress={()=>handleClickOpenCreate()}/>               
                 </Grid>
                 <Grid item xs={8}>               
                     <DynamicTables headers={headers} datas={rows}/>   
                 </Grid>
             </Grid>
-            <CustomDialog
+            <FormDialog
+                title={dialogTitle}
                 open={open}
                 onClose={() => setOpen(false)}
+                onConfirm={handleEdit}
             >
-                <TaskForm/>
-            </CustomDialog>
+                <TaskForm data={formData}/>
+            </FormDialog>
             <ConfirmDialog
                 title="Delete Data?"
                 open={openConfirm}

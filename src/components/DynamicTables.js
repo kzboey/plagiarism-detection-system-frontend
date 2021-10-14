@@ -66,7 +66,7 @@ export default function DynamicTables(props){
           <Paper>
           <TableContainer component={Paper}>
             <Table>
-              <TableHead class="table-header">
+              <TableHead className="table-header">
                 <TableRow>
                     {headers.map(header => (
                       <TableCell
@@ -83,7 +83,7 @@ export default function DynamicTables(props){
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map(row => {
                     return (
-                      <TableRow hover tabIndex={-1}  class="table-row">
+                      <TableRow hover tabIndex={-1}  className="table-row">
                         {headers.map(header => {
                           const value = row[header.id];
                           return (

@@ -12,11 +12,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function IconButton(props){
     const classes = useStyles();
-    const {tips,handleClick,children} = props;
+    const {tips,handleClick,children,...other} = props;
    
     return(
         <Tooltip TransitionComponent={Fade} title={tips}>
-            <MUIconButton onClick={handleClick} className={classes.iconButton}>
+            <MUIconButton onClick={handleClick} className={classes.iconButton} {...other}>
                 {children}
             </MUIconButton>
         </Tooltip>

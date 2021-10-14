@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
         cursor: 'pointer',
         boxShadow: '0 4px 20px 0 rgba(61, 71, 82, 0.1), 0 0 0 0 rgba(0, 127, 255, 0)',
         '&:hover' : {
-            backgroundColor:'#1a0387',
+            backgroundColor:'#a60042',
             transition: 'width 2s',
           }
       },
@@ -37,24 +37,6 @@ export const SubmitButton = props =>{
     )
 }
 
-export const ConfirmButton = props => {
-    const classes = useStyles();
-    const {title,type,onPress,...other} = props;
-    
-    return(
-        <Button
-            color="primary"
-            size="medium"
-            variant="contained"
-            component="span"
-            className={classes.buttonBlock}
-            type="button"
-            onClick={onPress}
-            {...other}>
-            {title}
-        </Button>
-    )
-}
 
 export const UploadButton = props =>{
     const classes = useStyles();

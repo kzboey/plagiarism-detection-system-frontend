@@ -7,11 +7,27 @@ body {
 }
 
 h2 {
+  color : #bf165e; 
   font-size : 1.8rem;
   font-weight : 500;
+  margin-bottom: 0em;
+  margin-top: 0.5em;
+  padding-bottom: 0.25em;
   border-bottom : 1.5px solid #bf165e;
-  color : #bf165e;
-  padding-bottom : 0.5rem;
+}
+
+.title-row {
+  color : #bf165e; 
+  padding-top : 0px;
+}
+
+.button-row{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  padding-top: 0.1em !important;
+  padding-bottom: 0.1em !important;
 }
 
 span{
