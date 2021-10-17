@@ -48,6 +48,7 @@ export const UploadButton = props =>{
                 accept="image/*"
                 style={{ display: 'none' }}
                 id="uploadButton"
+                multiple
             />
             <label htmlFor="uploadButton">
                 <Button

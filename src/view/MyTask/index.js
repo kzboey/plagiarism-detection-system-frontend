@@ -11,7 +11,8 @@ import '../../styles/media.scss';
 
 //Define header label
 const headers = [
-    {id : "id", label : "Course Id", align: "left", format: value => value.toLocaleString()},
+    {id : "task_id", label : "Task Id", align: "left", format: value => value.toLocaleString()},
+    {id : "course_id", label : "Course Id", align: "center", format: value => value.toLocaleString()},
     {id : "title", label : "Course Title", align: "center", format: value => value.toLocaleString()},
     {id : "task", label : "Task", align: "center",format: value => value.toLocaleString()},
     {id : "start", label : "Start Date", align: "center",format: value => value.toLocaleString()},
@@ -19,8 +20,8 @@ const headers = [
     {id : "action", label : "Actions", align: "center"}
 ]
 
-function createData(id, title, task, start, due, action ) {
-    return { id, title, task, start, due, action };
+function createData(task_id, course_id, title, task, start, due, action ) {
+    return { task_id, course_id, title, task, start, due, action };
 }
 
 export default function TaskLists(props){
@@ -64,9 +65,9 @@ export default function TaskLists(props){
     //row item value for data table
     const rows = taskList.map(item =>
         createData(
-            item.id, item.title, item.task, item.start_date, item.end_date, 
+            item.task_id, item.course_id, item.title, item.task, item.start_date, item.end_date, 
             <ButtonGroup variant="outlined">
-                <IconButton tips="view submissions" handleClick={() => { handleClick(item.id)}}>
+                <IconButton tips="view submissions" handleClick={() => { handleClick(item.course_id)}}>
                     <PreviewIcon/>
                 </IconButton>
                 <IconButton tips="edit" handleClick={() => { handleClickOpenEdit(item)}}>

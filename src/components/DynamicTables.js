@@ -13,6 +13,7 @@ import SearchBar from "material-ui-search-bar";
 import '../styles/media.scss';
 import '../styles/table.scss';
 
+
 const useStyles = makeStyles(theme => ({
   searchBar : {
     marginBottom : '12px'

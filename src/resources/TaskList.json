@@ -1,27 +1,31 @@
 [
      {
-          "id" : "CS5487",
+          "task_id" : "123456",
+          "course_id" : "CS5487",
           "title" : "machine learning",
           "task" : "Midterm",
           "start_date" : "2021-07-21",
           "end_date" : "2021-08-30"
      },
      {
-          "id" : "CS3331",
+          "task_id" : "275678",
+          "course_id" : "CS3331",
           "title" : "Computer Programming",
           "task" : "Assignment 1",
           "start_date" : "2021-07-21",
           "end_date" : "2021-08-30"
      },
      {
-          "id" : "CS3433",
+          "task_id" : "085668",
+          "course_id" : "CS3433",
           "title" : "Computer Network",
           "task" : "Midterm",
           "start_date" : "2021-07-21",
           "end_date" : "2021-08-30"
      },
      {
-          "id" : "CS2311",
+          "task_id" : "423152",
+          "course_id" : "CS2311",
           "title" : "Operating System",
           "task" : "Final",
           "start_date" : "2021-07-21",
