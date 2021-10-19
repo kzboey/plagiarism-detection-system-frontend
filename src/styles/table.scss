@@ -48,6 +48,20 @@ table {
 
 }
 
+.table-row-expandable {
+	padding:($half-spacing-unit * 0.2) 0;
+    &:hover {
+        background-color: $color-form-hover;
+        cursor: pointer;
+    }
+    td {
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin : 0px;
+        padding : 0.6em;
+    };
+
+}
 .table-pagination {
     background-color: #D3D3D3;
 }

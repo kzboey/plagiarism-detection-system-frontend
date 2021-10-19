@@ -1,86 +1,158 @@
 [
     {
          "author" : "Student 1",
-         "title" : "CS2231 midterm_1",
+         "document" : "CS2231 midterm_1",
+         "lenght" : 3,
          "similarity" : "24%",
          "paperid" : "1234567",
-         "date" : "30-08-2021"
+         "date" : "30-08-2021",
+         "subFiles" : {
+             "subFile1" :"CS2231 midterm_1_2.png", 
+             "subFile2" :"CS2231 midterm_1_2.png",
+             "subFile3" :"CS2231 midterm_1_3.png"  
+         }
     },
     {
         "author" : "Student 2",
-        "title" : "CS2231 midterm_1",
+        "document" : "CS2231 midterm_1",
+        "lenght" : 3,
         "similarity" : "13%",
         "paperid" : "1221412",
-        "date" : "30-08-2021"
+        "date" : "30-08-2021",
+        "subFiles" : {
+            "subFile1" :"CS2231 midterm_1_0.png", 
+            "subFile2" :"CS2231 midterm_1_2.png",
+            "subFile3" :"CS2231 midterm_1_3.png"  
+        }
     },
     {
         "author" : "Student 3",
-        "title" : "CS2231 midterm_1",
+        "document" : "CS2231 midterm_1",
+        "lenght" : 3,
         "similarity" : "22%",
         "paperid" : "3463463",
-        "date" : "30-08-2021"
+        "date" : "30-08-2021",
+        "subFiles" : {
+            "subFile1" :"CS2231 midterm_1_0.png", 
+            "subFile2" :"CS2231 midterm_1_2.png",
+            "subFile3" :"CS2231 midterm_1_3.png"  
+        }
     },
     {
         "author" : "Student 4",
-        "title" : "CS2231 midterm_1",
+        "document" : "CS2231 midterm_1",
+        "lenght" : 3,
         "similarity" : "65%",
         "paperid" : "5768425",
-        "date" : "30-08-2021"
+        "date" : "30-08-2021",
+        "subFiles" : {
+            "subFile1" :"CS2231 midterm_1_0.png", 
+            "subFile2" :"CS2231 midterm_1_2.png",
+            "subFile3" :"CS2231 midterm_1_3.png"  
+        }
     },
     {
         "author" : "Student 5",
-        "title" : "CS2231 midterm_1",
+        "document" : "CS2231 midterm_1",
+        "lenght" : 3,
         "similarity" : "43%",
         "paperid" : "6422553",
-        "date" : "30-08-2021"
+        "date" : "30-08-2021",
+        "subFiles" : {
+            "subFile1" :"CS2231 midterm_1_0.png", 
+            "subFile2" :"CS2231 midterm_1_2.png",
+            "subFile3" :"CS2231 midterm_1_3.png"  
+        }
     },
     {
         "author" : "Student 6",
-        "title" : "CS2231 midterm_1",
+        "document" : "CS2231 midterm_1",
+        "lenght" : 3,
         "similarity" : "55%",
         "paperid" : "7645347",
-        "date" : "30-08-2021"
+        "date" : "30-08-2021",
+        "subFiles" : {
+            "subFile1" :"CS2231 midterm_1_0.png", 
+            "subFile2" :"CS2231 midterm_1_2.png",
+            "subFile3" :"CS2231 midterm_1_3.png"  
+        }
     },
     {
         "author" : "Student 7",
-        "title" : "CS2231 midterm_1",
+        "document" : "CS2231 midterm_1",
+        "lenght" : 3,
         "similarity" : "13%",
         "paperid" : "4672437",
-        "date" : "30-08-2021"
+        "date" : "30-08-2021",
+        "subFiles" : {
+            "subFile1" :"CS2231 midterm_1_0.png", 
+            "subFile2" :"CS2231 midterm_1_2.png",
+            "subFile3" :"CS2231 midterm_1_3.png"  
+        }
     },
     {
         "author" : "Student 3",
-        "title" : "CS2231 midterm_1",
+        "document" : "CS2231 midterm_1",
+        "lenght" : 3,
         "similarity" : "22%",
         "paperid" : "3463463",
-        "date" : "30-08-2021"
+        "date" : "30-08-2021",
+        "subFiles" : {
+            "subFile1" :"CS2231 midterm_1_0.png", 
+            "subFile2" :"CS2231 midterm_1_2.png",
+            "subFile3" :"CS2231 midterm_1_3.png"  
+        }
     },
     {
         "author" : "Student 4",
-        "title" : "CS2231 midterm_1",
+        "document" : "CS2231 midterm_1",
+        "lenght" : 3,
         "similarity" : "65%",
         "paperid" : "5768425",
-        "date" : "30-08-2021"
+        "date" : "30-08-2021",
+        "subFiles" : {
+            "subFile1" :"CS2231 midterm_1_0.png", 
+            "subFile2" :"CS2231 midterm_1_2.png",
+            "subFile3" :"CS2231 midterm_1_3.png"  
+        }
     },
     {
         "author" : "Student 5",
-        "title" : "CS2231 midterm_1",
+        "document" : "CS2231 midterm_1",
+        "lenght" : 3,
         "similarity" : "43%",
         "paperid" : "6422553",
-        "date" : "30-08-2021"
+        "date" : "30-08-2021",
+        "subFiles" : {
+            "subFile1" :"CS2231 midterm_1_0.png", 
+            "subFile2" :"CS2231 midterm_1_2.png",
+            "subFile3" :"CS2231 midterm_1_3.png"  
+        }
     },
     {
         "author" : "Student 6",
-        "title" : "CS2231 midterm_1",
+        "document" : "CS2231 midterm_1",
+        "lenght" : 3,
         "similarity" : "55%",
         "paperid" : "7645347",
-        "date" : "30-08-2021"
+        "date" : "30-08-2021",
+        "subFiles" : {
+            "subFile1" :"CS2231 midterm_1_0.png", 
+            "subFile2" :"CS2231 midterm_1_2.png",
+            "subFile3" :"CS2231 midterm_1_3.png"  
+        }
     },
     {
         "author" : "Student 7",
-        "title" : "CS2231 midterm_1",
+        "document" : "CS2231 midterm_1",
+        "lenght" : 3,
         "similarity" : "13%",
         "paperid" : "4672437",
-        "date" : "30-08-2021"
+        "date" : "30-08-2021",
+        "subFiles" : {
+            "subFile1" :"CS2231 midterm_1_0.png", 
+            "subFile2" :"CS2231 midterm_1_2.png",
+            "subFile3" :"CS2231 midterm_1_3.png"  
+        }
     }
 ]

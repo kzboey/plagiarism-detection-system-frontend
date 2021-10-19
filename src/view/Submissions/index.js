@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {Box,Grid} from '@material-ui/core';
-import {DynamicTables,UploadButton,IconButton,ConfirmDialog} from '../../components/export'
+import {DynamicTables,UploadButton,IconButton,ConfirmDialog,ExpandableTables} from '../../components/export'
 import score from '../../resources/Score.json';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import ButtonGroup  from '@material-ui/core/ButtonGroup';
@@ -9,15 +9,21 @@ import '../../styles/media.scss';
 
 const headers = [
     {id : "author", label : "Author", align: "left", format: value => value.toLocaleString()},
-    {id : "title", label : "Title", align: "center", format: value => value.toLocaleString()},
+    {id : "document", label : "Files", align: "center", format: value => value.toLocaleString()},
     {id : "similarity", label : "Similarity", align: "center",format: value => value.toLocaleString()},
     {id : "pid", label : "Paper Id", align: "center"},
-    {id : "date", label : "Date", align: "center"},
+    {id : "date", label : "Uploaded Date", align: "center"},
     {id : "action", label : "Actions", align: "center"}
 ]
 
-function createData(author, title, similarity, pid, date, action ) {
-    return { author, title, similarity, pid, date, action };
+const subheaders = [
+    {},{},
+    {id : "subFiles", align: "center", position : 2},
+    {},{},{},{}
+]
+
+function createData(author, document, similarity, pid, date, action,subFiles ) {
+    return { author, document, similarity, pid, date, action,subFiles };
 }
 
 
@@ -42,7 +48,7 @@ export default function Submissions(props){
     const rows = score.map(item =>
         createData(
             item.author,
-            item.title, 
+            item.document, 
             item.similarity, 
             item.paperid, 
             item.date,
@@ -53,7 +59,8 @@ export default function Submissions(props){
                 <IconButton tips="delete" handleClick={handleClickOpenConfirm}>
                     <DeleteIcon/>
                 </IconButton>
-            </ButtonGroup>
+            </ButtonGroup>,
+            item.subFiles
             )
     );
 
@@ -68,7 +75,7 @@ export default function Submissions(props){
                     <UploadButton title="upload" type="upload"/>               
                 </Grid>
                 <Grid item xs={8}>
-                    <DynamicTables headers={headers} datas={rows}/>
+                    <ExpandableTables headers={headers} subHeaders={subheaders} datas={rows}/>
                 </Grid>
             </Grid>
             <ConfirmDialog
