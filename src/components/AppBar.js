@@ -53,6 +53,7 @@ export default function Header(props) {
     }
 
     const handleLogout = () => {
+        //revoke token
         history.push("/login");
     }
 

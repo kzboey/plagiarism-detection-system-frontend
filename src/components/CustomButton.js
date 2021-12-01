@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {Button,makeStyles} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -38,31 +38,3 @@ export const SubmitButton = props =>{
 }
 
 
-export const UploadButton = props =>{
-    const classes = useStyles();
-    const {title,type,onPress,...other} = props;
-    return (
-        <div style={{ display: 'inline' }}>
-            <input
-                type="file"
-                accept="image/*"
-                style={{ display: 'none' }}
-                id="uploadButton"
-                multiple
-            />
-            <label htmlFor="uploadButton">
-                <Button
-                    color="secondary"
-                    size="medium"
-                    variant="contained"
-                    className={classes.buttonBlock}
-                    type={type}
-                    onClick={onPress}
-                    component="span"
-                    {...other}>
-                    {title}
-                </Button>
-            </label>
-        </div>
-    )
-}

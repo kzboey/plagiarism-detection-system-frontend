@@ -23,7 +23,7 @@ const App = () => {
     useEffect(() => console.log("Refresh"));
 
     return (
-      <div>
+      <Box>
         <Router>
           <Switch>
             <Redirect exact from="/" to="/login" />
@@ -43,7 +43,7 @@ const App = () => {
             </Fragment>
           </Switch>
         </Router>
-      </div>
+      </Box>
     )
 }
 

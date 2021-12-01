@@ -10,19 +10,24 @@ import { MuiPickersUtilsProvider,DateTimePicker as MuiDateTimePicker } from "@ma
 import {formatDate} from '../../util/DateUtil'
 
 export function TaskForm(props) {
-    const {data} = props;
+    const {data,type,childData} = props;
     const { control, handleSubmit } = useForm({});
     const [startDate, setStartDate] = useState(data != undefined ? new Date(data.start_date) : formatDate(new Date()));
-    const [endDate, setEndDate] = useState(data != undefined ? new Date(data.end_date) : formatDate(new Date()));
+    const [endDate, setEndDate] = useState(data != undefined ? new Date(data.due_date) : formatDate(new Date()));
 
     const onSubmit = (values) => {
-        values.course_id = values.course_id !== undefined ? values.course_id : "";
-        values.title = values.title !== undefined ? values.title : "";
-        values.task = values.task !== undefined ? values.task : "";
-        values.start_date = values.start_date !== undefined ? values.start_date : "";
-        values.end_date = values.end_date !== undefined ? values.end_date : "";
-        console.log(JSON.stringify(values));
-        //post to backend
+        let formdata = {};
+        // formdata.course_id = values.course_id === undefined || values.id === "" ? values.id : "";
+        // formdata.course_title = values.title === undefined || values.title === "" ? values.title : "";
+        // formdata.task_name = values.task_name === undefined || values.task === ""? values.task : "";
+        if(type == 'edit'){formdata.task_id = data.task_id};
+        formdata.course_id = values.id !== undefined ? values.id : data.course_id;
+        formdata.course_title = values.title !== undefined ? values.title : data.course_title;
+        formdata.task_name = values.task !== undefined ? values.task : data.task_name;
+        formdata.start_date = values.start_date === undefined || values.start_date === "" ? formatDate(startDate) : "";
+        formdata.due_date = values.end_date === undefined || values.end_date === "" ? formatDate(endDate) : "";
+        console.log(JSON.stringify(formdata));
+        childData(formdata,type);
     }
 
     const handleStartDateChange = (newStartDate) => {
@@ -50,7 +55,7 @@ export function TaskForm(props) {
                                     fullWidth
                                     name="id"
                                     variant="outlined"
-                                    defaultValue = {data !== undefined ? data.course_id : ""}
+                                    defaultValue = {data !== undefined && type == 'edit' ? data.course_id : ""}
                                 />
                             )}
                         />
@@ -68,7 +73,7 @@ export function TaskForm(props) {
                                 fullWidth
                                 name="title"
                                 variant="outlined"
-                                defaultValue = {data !== undefined ? data.title : ""} />
+                                defaultValue = {data !== undefined && type == 'edit'? data.course_title : ""} />
                             )}
                         />
                     </Grid>
@@ -86,7 +91,7 @@ export function TaskForm(props) {
                                 name="task"
                                 helperText="eg: midterm, final"
                                 variant="outlined" 
-                                defaultValue = {data !== undefined ? data.task : ""}/>
+                                defaultValue = {data !== undefined && type == 'edit'? data.task_name : ""}/>
                             )}
                         />
                     </Grid>

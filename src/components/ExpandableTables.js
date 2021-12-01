@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {makeStyles} from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -22,9 +22,9 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const ExpandableTableRow = ({ children, subHeader,curentRow, rowLength}) => {
+const ExpandableTableRow = ({ children, subHeader,curentRow, ...rest}) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
-  let subItems = curentRow[subHeader[2].id];
+  let subItems = curentRow.expandedItems;
 
   return (
     <>
@@ -41,13 +41,15 @@ const ExpandableTableRow = ({ children, subHeader,curentRow, rowLength}) => {
           return(       
             <TableRow  className="table-row-expandable">
               {subHeader.map((header, index) => {
-                  const value = subItems[key];
+                  const value = (subItems[key])[header.id];
                   if(header.id !== undefined){
                     return (
                       <TableCell key={header.id} align={header.align}>
+                        {header.prefix != undefined ? header.prefix : ""}
                         {header.format && typeof value === "number" 
                           ? header.format(value)
                           : value}
+                          {header.postfix != undefined ? header.postfix : ""}
                       </TableCell>
                     );
                   }else{
@@ -68,7 +70,11 @@ export default function ExpandableTables(props){
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows, setRows] = useState(datas);
-    const [searched, setSearched] = useState("");
+    const [searched, setSearched] = useState(""); 
+
+    useEffect(async () => {
+      setRows(datas);
+    },[datas]);
 
     const requestSearch = (searchedVal) => {
       const filteredRows = datas.filter((row) => {
@@ -131,7 +137,6 @@ export default function ExpandableTables(props){
                         key={row.name}
                         subHeader = {subHeaders}
                         curentRow = {row}
-                        rowLength = {Object.keys(headers).length}
                       >
                           {headers.map(header => {
                             const value = row[header.id];

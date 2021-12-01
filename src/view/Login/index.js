@@ -20,8 +20,10 @@ class Login extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         //login implementations
-        post(AppConfig.getAPI('login'),{}).then(resp =>{
-            if(resp.status == 0){
+        post(AppConfig.getAPI('getToken'),{eid: this.state.username, password: this.state.password},{}).then(resp =>{
+            if(resp != undefined && resp.code == 0){
+                AppConfig.setToken(resp.data.access_token);
+                AppConfig.setRefreshToken(resp.data.refresh_token);
                 this.props.history.push("/dashboard");
             }
         })    

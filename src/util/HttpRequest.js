@@ -1,32 +1,55 @@
 import axios from 'axios';
 
-export const get =(url) => {
-    axios.get(url)
+export const get =(url,header) => {
+    return axios.get(url, {headers: header})
+    // axios.get(url)
+        .then(resp => {
+            console.log('success'+resp);
+            return resp.data;
+        }).catch(
+            error => {
+                console.error('timeout exceeded');
+                return error;
+            }
+        );
+}
+
+export const post = (url,data, header) => {
+    return axios.post(url, data, {headers: header})
         .then(resp => {
             console.log(resp);
             return resp.data;
         }).catch(
-            error => console.error('timeout exceeded')
+            error => {
+                console.error('timeout exceeded');
+                return error;
+            }
         );
 }
 
-export const post = (url,data) => {
-    return axios({
-        method: 'post',
-        url: url,
-        data: data,
-        withCredentials: false,
-        headers: {
-            'Content-Type': 'application/json',
-            'chartset': 'UTF-8',
-            'Pragma': 'no-cache',	
-            'Cache-Control': 'no-cache'
-        },
-        //timeout:requestTimeout
-    }).then(resp => {
-        console.log(resp);
-        return resp.data;
-    }).catch(
-        error => console.error('timeout exceeded')
-    );
+export const patch = (url,data, header) => {
+    return axios.patch(url, data, {headers: header})
+        .then(resp => {
+            console.log(resp);
+            return resp.data;
+        }).catch(
+            error => {
+                console.error('timeout exceeded');
+                return error;
+            }
+        );
 }
+
+export const deletes = (url,header) => {
+    return axios.delete(url, {headers: header})
+        .then(resp => {
+            console.log(resp);
+            return resp.data;
+        }).catch(
+            error => {
+                console.error('timeout exceeded');
+                return error;
+            }
+        );
+}
+

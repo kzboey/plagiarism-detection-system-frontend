@@ -12,12 +12,12 @@ export default [
         Component: TaskLists 
     },
     { 
-        path: "/dashboard/:course_id", 
+        path: "/dashboard/:id", 
         name: "Submissions", 
         Component: Submissions 
     },
     { 
-        path: "/dashboard/:course_id/:student", 
+        path: "/dashboard/:id/:student", 
         name: "MatchingReport", 
         Component: MatchingReport 
     }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {makeStyles} from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -55,6 +55,8 @@ export default function DynamicTables(props){
       setRowsPerPage(+event.target.value);
       setPage(0);
     };
+
+    useEffect(() => { setRows(datas)}, [datas] )
 
     return(
         <Box>
