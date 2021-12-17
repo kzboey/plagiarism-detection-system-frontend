@@ -1,21 +1,21 @@
 export const MATCHDATA = 
 [
     {
-        string : 'jajd jgjeq',
-        sources : 'Publication',
-        similiarity : '11%'
+        content_value : 'jajd jgjeq',
+        origin : 'Publication',
+        similarity : '11%'
     },
     {
-        string : 'afsasas',
-        sources : 'Student exam',
-        similiarity : '22%'
+        content_value : 'afsasas',
+        origin : 'Student exam',
+        similarity : '22%'
     },{
-        string : 'aknkweem',
-        sources : 'Student exam',
-        similiarity : '19%'
+        content_value : 'aknkweem',
+        origin : 'Student exam',
+        similarity : '19%'
     },{
-        string : 'kmhwrow',
-        sources : 'Internet Sources',
-        similiarity : '7%'
+        content_value : 'kmhwrow',
+        origin : 'Internet Sources',
+        similarity : '7%'
     },
 ]

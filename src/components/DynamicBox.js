@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import {MATCHDATA } from '../resources/MatchData';
 import '../styles/media.scss';
 import {Container,Typography,Divider,Box,makeStyles,Button} from '@material-ui/core';
 import { List, ListItem, ListItemText } from '@material-ui/core';
 import CustomDialog from './CustomDialog' 
+import sample2 from '../resources/sample2.png'; // Tell webpack this JS file uses this image
+import Image from 'material-ui-image'
 
 const useStyles = makeStyles(theme => ({
     matchlist: {
@@ -48,8 +50,12 @@ const useStyles = makeStyles(theme => ({
 
   export default function DynamicBox(props){
     const classes = useStyles();
+    const {datas, ...rest} = props;
     const [open, setOpen] = React.useState(false);
+    const [rows, setRows] = useState(datas);
     const mdata = MATCHDATA;
+
+    useEffect(() => { setRows(datas)}, [datas] )
 
     const getListClassName = (source) =>{
         let className = '';
@@ -78,20 +84,20 @@ const useStyles = makeStyles(theme => ({
             <List className={classes.matchlist}> 
             <Box className={classes.matchOverall}>
                 <p>21%</p>
-                <span>{mdata.length} matches</span> 
+                <span>{rows.length} matches</span> 
             </Box> 
             <Divider/>
-            {mdata.map((row,index) => (
-                <ListItem divider className={getListClassName(row.sources)} onClick={handleClickOpen}>
+            {rows.map((row,index) => (
+                <ListItem divider className={getListClassName(row.origin)} onClick={handleClickOpen}>
                     <Typography variant="h3" className={classes.listIndex}>
                         {++index}
                     </Typography>  
                     <ListItemText 
-                        primary={<Typography style={{ fontSize: '1.5rem', fontWeight : 'bold' }}>{row.string}</Typography>} 
-                        secondary={row.sources} 
+                        primary={<Typography style={{ fontSize: '1.5rem', fontWeight : 'bold' }}>{row.content_value}</Typography>} 
+                        secondary={row.origin} 
                         className={classes.matchListItemText}/> 
                     <Typography variant="h4" className={classes.listSimilarity}>
-                        {row.similiarity}
+                        {row.similarity}
                     </Typography>  
                 </ListItem>            
             ))}
@@ -99,6 +105,7 @@ const useStyles = makeStyles(theme => ({
             <CustomDialog
                 open={open}
                 onClose={() => setOpen(false)}
+                content = {<Image src={sample2}/> }
             />
         </Container>         
     )

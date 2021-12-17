@@ -14,9 +14,12 @@ module.exports = {
 			upload: '/vtl/upload/',
 			submissions: '/vtl/submissions/',
 			deleteSubmission: '/vtl/submission/',
-			contents: '/vtl/contents',
+			getPages: '/vtl/pages',
+			contents: '/vtl/getImagecontents',
+			getBoxContents: '/vtl/getBoxContents',
 		},
 	},
+	right: '',
 	request: {
 		timeout: 20000 // 20s
 	},

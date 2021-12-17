@@ -4,7 +4,7 @@ import Image from 'material-ui-image'
 
 
 export default function CustomDialog(props) {
-  const  { open, onClose, data, children } = props;
+  const  { open, onClose, content, children } = props;
 
   const handleClose = () => {
     onClose();
@@ -12,8 +12,8 @@ export default function CustomDialog(props) {
 
   return (
     <Dialog onClose={handleClose} open={open}>
-        <Paper>
-            <DialogContent>{children}</DialogContent>     
+        <Paper  style={{ width: '25rem'}}>
+          {content}   
         </Paper>
         <Button onClick={handleClose} color="primary">
                   CLOSE

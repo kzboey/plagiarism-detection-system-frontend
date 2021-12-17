@@ -1,6 +1,11 @@
-import { CreateTaskForm,TaskLists, Submissions, MatchingReport } from "./view/export";
+import { CreateTaskForm,TaskLists, Submissions, MatchingReport,CreateUser } from "./view/export";
 
 export default [
+    { 
+        path: "/newuser", 
+        name: "CreateUser", 
+        Component: CreateUser 
+    },
     { 
         path: "/task", 
         name: "CreateTask", 

@@ -24,6 +24,7 @@ class Login extends React.Component {
             if(resp != undefined && resp.code == 0){
                 AppConfig.setToken(resp.data.access_token);
                 AppConfig.setRefreshToken(resp.data.refresh_token);
+                AppConfig.setUserRight(resp.data.user_right)
                 this.props.history.push("/dashboard");
             }
         })    

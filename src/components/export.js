@@ -9,4 +9,5 @@ export { default as IconButton } from './IconButton';
 export { default as ConfirmDialog } from './ConfirmDialog';
 export { default as FormDialog } from './FormDialog';
 export { default as CustomSnackbar } from './CustomSnackbar';
+export { default as Canvas } from './Canvas';
 export * from './CustomForm';

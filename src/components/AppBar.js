@@ -4,7 +4,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import AddIcon from '@mui/icons-material/Add';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
-import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Link } from 'react-router-dom';
@@ -13,6 +12,7 @@ import myavatar from '../resources/avatar.jpg'; // Tell webpack this JS file use
 import { useLocation} from "react-router-dom";
 import {IconButton} from './export'
 import { useHistory } from 'react-router-dom';
+import AppConfig from '../util/AppConfig.js';
 
 const useStyles = makeStyles(theme => ({
     appbackground : {
@@ -43,6 +43,7 @@ export default function Header(props) {
     const {titles} = props;
     const [isSideBarOpen, setIsSideBarOpen] = useState(false);
     const [title, setTitle] = useState(titles["/"]);
+    const userRight = AppConfig.getUserRight();
 
     const toggleSideBar = () => {
         setIsSideBarOpen(true);
@@ -66,9 +67,11 @@ export default function Header(props) {
             <AppBar position="static" className={classes.appbackground}> 
                 <Toolbar>
                    
-                    {/* <IconButton onClick={toggleSideBar}>
-                        <MenuIcon/>
-                    </IconButton> */}
+                   {userRight == "admin" &&
+                        <IconButton onClick={toggleSideBar}>
+                            <MenuIcon/>
+                        </IconButton>
+                   }
 
                     <Typography variant="title" color="inherit" className={classes.appbarTitle}>
                         Plagiarism Detection System
@@ -89,12 +92,12 @@ export default function Header(props) {
                 onClose={closeSideBar}>
                 <Box className={classes.sideNav} >
                 <List>
-                    <Link to='/task' className={classes.link}>
+                    <Link to='/newuser' className={classes.link}>
                         <ListItem>
                         <ListItemIcon>
                             <AddIcon/>
                         </ListItemIcon>
-                        <ListItemText primary='Create Task' />
+                        <ListItemText primary='Create Users' />
                         </ListItem>
                     </Link>
                     <Divider/>
