@@ -1,6 +1,6 @@
 import React, {useState, useEffect,useRef} from 'react'
-import {Box,Grid,Button} from '@material-ui/core';
-import {DynamicTables,SubmitButton,IconButton,ConfirmDialog,ExpandableTables,CustomSnackbar} from '../../components/export'
+import {Box,Grid,Typography,makeStyles} from '@material-ui/core';
+import {CustomDialog,SubmitButton,IconButton,ConfirmDialog,ExpandableTables,CustomSnackbar,CircularProgressWithLabel} from '../../components/export'
 import score from '../../resources/Score.json';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import ButtonGroup  from '@material-ui/core/ButtonGroup';
@@ -8,6 +8,20 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import AppConfig from '../../util/AppConfig.js';
 import {get,post,deletes,} from '../../util/HttpRequest'
 import '../../styles/media.scss';
+import axios from 'axios';
+
+
+const useStyles = makeStyles(theme => ({
+    progressBar: {
+      flexGrow: 1,
+      padding : '20px',
+    },
+    progressBar2: {
+        position: 'fixed',
+        top : '50%',
+        left : '50%',
+      }
+  }))
 
 const headers = [
     {id : "author_name", label : "Author", align: "left", format: value => value.toLocaleString()},
@@ -31,10 +45,17 @@ function createData(author_name, document,length, overall_similarity, modified_d
 }
 
 export default function Submissions(props){
+    const classes = useStyles();
     const [openConfirm, setOpenConfirm] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
     const [data, setData] =  useState([]);
     const [deleteId, setDeleteId] =  useState('');
+    const [alertType, setAlertType] = useState('success');
+    const [alertMessage, setOpenMessage] = useState('');
+    const [progress, setProgress] = useState(0);
+    const [loaded, setLoaded] = useState(0);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [isSucess, setIsSucess] = useState(false);
 
     const urlParams = new URLSearchParams(props.history.location.search);
     const taskId = props.match.params.id;
@@ -42,6 +63,7 @@ export default function Submissions(props){
     const USER_TOKEN = AppConfig.getToken()
     const AuthStr = 'Bearer '.concat(USER_TOKEN); 
     const uploadFile = useRef(null);
+    const downloadurl = AppConfig.getAPI('downloadImages') + taskId;
 
     useEffect(async () => {
         fetchData();
@@ -55,6 +77,7 @@ export default function Submissions(props){
                 setData(resp.data);
             }else{
                 AppConfig.refreshToken();
+                // fetchData();
                 setData([]);
             }
         }); 
@@ -67,14 +90,19 @@ export default function Submissions(props){
 
     const handleRemove = () => {
         //api delete data in db
-        let url = AppConfig.getAPI('deleteSubmission') + deleteId;
+        
+        let url = AppConfig.getAPI('deleteSubmission') + deleteId+'?task_id='+taskId;
         if(deleteId != ''){
             deletes(url,{Authorization: AuthStr}).then(resp => {
                 if(resp != undefined && resp.code == 0){     
                     console.log("delete submissions succeed");          
                     fetchData();
+                    setAlertType('success');
+                    setOpenMessage('Delete File successful!');
                     setOpenAlert(true);
                 }else{
+                    setAlertType('error');
+                    setOpenMessage('Error deleting File!');
                     setOpenAlert(true);
                 }
             }); 
@@ -99,24 +127,91 @@ export default function Submissions(props){
 
     };
 
-    const handleUpload= () => {
+    const handleClickDownload = () => {
+        let url = AppConfig.getAPI('downloadImages') + taskId;
+        get(url,{Authorization: AuthStr}).then(resp => {
+            // if(resp != undefined && resp.code == 0){
+            //     console.log("downlaod success");
+            // }
+        }); 
+    };
+
+    const getTotalUploadData = (files) => {
+        let total = 0;
+        for (const file of files) {
+            total += file.size;
+          }
+        return total;
+    }
+
+    const postFile = (url, form,currentFileSize, totalFileSize, p_loaded) => {
+        return new Promise((resolve, reject) =>{
+            axios.post(url,form, {
+                headers:{'Authorization': AuthStr, 'Content-Type': 'multipart/form-data'},            
+                onUploadProgress: data => {
+                    //Set the progress value to show the progress bar
+                    let dataLoaded = p_loaded + data.loaded;
+                    let prg= Math.round(100*(dataLoaded / totalFileSize));
+                    setLoaded(dataLoaded);
+                    setProgress(prg);
+                    progress == 100 || prg == 100 ? setIsSucess(true) : setIsSucess(false);
+                    setOpenDialog(true);
+                  },
+                //   onDownloadProgress: data => {
+                //     const prg= Math.round(progress + (100 * data.loaded) / totalFileSize);
+                //     console.log("onDownloadProgress file progress: "+prg);
+                //     setIsSucess(true)
+                //     setProgress(prg);
+                //     setOpenDialog(true);
+                //   },
+                }).then(resp =>{
+                if(resp.data != undefined && resp.data.code == 0){
+                    console.log(resp.data.message);
+                    fetchData();
+                    setAlertType('success');
+                    setOpenMessage(resp.data.message);
+                    setOpenAlert(true);
+                    resolve(true);
+                }else{
+                    setAlertType('error');
+                    setOpenMessage(resp.data.message);
+                    setOpenAlert(true);
+                    reject(false);
+                }
+            })   
+        })
+    }
+      
+    async function handleUpload() {
         const fileUploaded = uploadFile;
         let files = uploadFile.current.files;
         let url = AppConfig.getAPI('upload') + taskId;
+        let totalFileSize = getTotalUploadData(files);
         const form = new FormData();
-        for(var i =0; i<files.length; i++){
-            form.append('document', files[i]);
-            post(url,form,{'Authorization': AuthStr, 'Content-Type': 'multipart/form-data'}).then(resp =>{
-                if(resp != undefined && resp.code == 0){
-                    console.log("upload success");
-                    fetchData();
-                    setOpenAlert(true);
+
+        let p_loaded =0;
+
+        for(const file of files) {
+            form.set('file', file);
+            await postFile(url,form,file.size, totalFileSize, p_loaded).then(res =>{
+                if(res){
+                    let dataLoaded = p_loaded + file.size;
+                    let prg= Math.round(100*(dataLoaded / totalFileSize));
+                    p_loaded = dataLoaded;
+                    setLoaded(dataLoaded);
+                    setProgress(prg);
+                    console.log("seting progress to prg "+progress);
+                    progress == 100 || prg == 100? setIsSucess(true) : setIsSucess(false);
                 }
-            }) 
-        };
+            });
+            
+        }
+        setOpenDialog(false);
+        setIsSucess(false);
+        setLoaded(0);
+        setProgress(0);
         
     };
-
     //row item value for data table
     const rows = data.map(item =>
         createData(
@@ -140,9 +235,15 @@ export default function Submissions(props){
 
     return(
         <Box>
+            {/* <CustomDialog
+                open={openDialog}
+                // onClose={() => setOpenDialog(false)}
+                content = {<Box display="block" className={classes.progressBar}><CircularProgressWithLabel value={progress} success={isSucess}/></Box> }
+            /> */}
+            {openDialog && <div className={classes.progressBar2}><CircularProgressWithLabel value={progress} success={isSucess}/></div>}
             <CustomSnackbar 
-                type="success" 
-                message="create task successful!"
+                type={alertType} 
+                message={alertMessage}
                 open={openAlert}
                 onClose={() => setOpenAlert(false)}/>
             <Grid container spacing={2} justify="center" alignItems="center" direction="row">
@@ -152,6 +253,8 @@ export default function Submissions(props){
                 <Grid item xs={8} className="button-row">
                    <input id="uploadButton" ref={uploadFile} onChange={handleUpload} type="file" name="document" accept="image/*" style={{ display: 'none' }}  multiple />  
                     <label htmlFor="uploadButton">
+                        {/* <SubmitButton title="Download" type="upload" onPress={()=>handleClickDownload()}/>   */}
+                        {/* <a href={downloadurl}>Download</a> */}
                         <SubmitButton title="Upload" type="upload" component="span" onPress={()=>handleClickUpload()}/>     
                     </label>
                 </Grid>

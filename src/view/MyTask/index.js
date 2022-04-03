@@ -36,13 +36,13 @@ export default function TaskLists(props){
     const [formData, setFormData] = useState("");
     const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
     const [openAlert, setOpenAlert] = useState(false);
-    const [alertType, setAlertType] = useState('info');
+    const [alertType, setAlertType] = useState('success');
     const [alertMessage, setOpenMessage] = useState('');
     const [data, setData] =  useState([]);
     const [deleteId, setDeleteId] =  useState('');
 
     useEffect(async () => {
-        if(data.length && data.length==0){
+        if(data.length && data.length===0){
             return;
         }
         fetchData();
@@ -52,10 +52,11 @@ export default function TaskLists(props){
         let USER_TOKEN = AppConfig.getToken()
         let AuthStr = 'Bearer '.concat(USER_TOKEN); 
         get(AppConfig.getAPI('tasks'),{Authorization: AuthStr}).then(resp => {
-            if(resp != undefined && resp.code == 0){               
+            if(resp != undefined && resp.code === 0){               
                 setData(resp.data);
             }else{
                 AppConfig.refreshToken();
+                // fetchData();
                 setData([]);
             }
         }); 
@@ -86,15 +87,19 @@ export default function TaskLists(props){
 
     const handleRemove = () => {
         //api delete data in db
-        if(deleteId != ''){
+        if(deleteId !== ''){
             let USER_TOKEN = AppConfig.getToken()
             let AuthStr = 'Bearer '.concat(USER_TOKEN); 
             let url = AppConfig.getAPI('task') + deleteId;
             deletes(url,{Authorization: AuthStr}).then(resp => {
-                if(resp != undefined && resp.code == 0){               
+                if(resp !== undefined && resp.code === 0){               
                     fetchData();
+                    setAlertType('success');
+                    setOpenMessage('Delete task successful!');
                     setOpenAlert(true);
                 }else{
+                    setAlertType('error');
+                    setOpenMessage('Error deleting task!');
                     setOpenAlert(true);
                 }
             }); 
@@ -112,19 +117,29 @@ export default function TaskLists(props){
         console.log("childData"+JSON.stringify(childData));
         let USER_TOKEN = AppConfig.getToken()
         let AuthStr = 'Bearer '.concat(USER_TOKEN); 
-        if(type == 'create'){
+        if(type === 'create'){
             post(AppConfig.getAPI('tasks'),childData,{Authorization: AuthStr}).then(resp =>{
-                if(resp != undefined && resp.code == 0){
+                if(resp !== undefined && resp.code === 0){
                     fetchData();
                     setFormData("");
+                    setAlertType('success');
+                    setOpenMessage('Create task successful!');
+                }else{
+                    setAlertType('error');
+                    setOpenMessage('Create task failed!');
                 }
             })    
-        }else if(type == 'edit'){
+        }else if(type === 'edit'){
             let url = AppConfig.getAPI('task') + childData.task_id;
             patch(url,childData,{Authorization: AuthStr}).then(resp =>{
-                if(resp != undefined && resp.code == 0){
+                if(resp !== undefined && resp.code === 0){
                     fetchData();
                     setFormData("");
+                    setAlertType('success');
+                    setOpenMessage('Edit task successful!');
+                }else{
+                    setAlertType('error');
+                    setOpenMessage('Edit task failed!');
                 }
             }) 
         }
@@ -150,15 +165,15 @@ export default function TaskLists(props){
     return(
         <Box>
             <CustomSnackbar 
-                type="success" 
-                message="create task successful!"
+                type={alertType} 
+                message={alertMessage}
                 open={openAlert}
                 onClose={() => setOpenAlert(false)}/>
             <Grid container spacing={2} justify="center" direction="row">
                 <Grid item xs={8} className="title-row">   
                     <h2>My Tasks:</h2>               
                 </Grid>
-                <Grid item xs={8} className="button-row">
+                <Grid item xs={8} className="button-row">        
                     <SubmitButton title="New Task" type="upload" onPress={()=>handleClickOpenCreate()}/>               
                 </Grid>
                 <Grid item xs={8}>      

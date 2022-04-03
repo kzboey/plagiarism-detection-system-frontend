@@ -9,17 +9,39 @@ import {
 } from "@material-ui/core";
 import { useForm, Controller } from "react-hook-form";
 import AppConfig from '../../util/AppConfig.js';
- 
+import {get,post,patch,deletes} from '../../util/HttpRequest'
+
 
 export function UserForm(props){
     const {data,type,childData} = props;
     const { control, handleSubmit } = useForm({});
-    const [value, setValue] = React.useState('');
+    const [value, setValue] = useState('');
+
+    function getValues(current,previous){
+        let value = ""
+        if(type == 'edit'){
+            value = current !== undefined ? current : previous; //means field not edited
+        }else{
+            value = current !== undefined ? current : ''; //means field not edited
+        }
+
+        return value;
+    }
 
     const onSubmit = (values) => {
-        values.rights = value;
+        let formdata = {};
+        values.right = value;
         console.log(JSON.stringify(values));
-        // childData(values,type);
+        formdata.eid = getValues(values.eid,data.eid);
+        formdata.password =  getValues(values.password,data.password);
+        formdata.last_name = getValues(values.last_name,data.last_name);
+        formdata.first_name = getValues(values.first_name,data.first_name);
+        formdata.other_name = getValues(values.other_name,data.other_name);
+        formdata.email = getValues(values.email,data.email);
+        formdata.phone = getValues(values.phone,data.phone);
+        formdata.organization = getValues(values.organization,data.organization);
+        formdata.right = getValues(values.right,data.right);
+        childData(formdata,type);
     }
 
     return (
@@ -39,7 +61,8 @@ export function UserForm(props){
                                     fullWidth
                                     name="eid"
                                     variant="outlined"
-                                    defaultValue = {data !== undefined && type == 'edit' ? data.eid : ""}
+                                    disabled = {type == 'edit' ? true : false}
+                                    defaultValue = {data !== undefined && type == 'edit' ? data.eid : ''}
                                 />
                             )}
                         />
@@ -57,6 +80,7 @@ export function UserForm(props){
                                 fullWidth
                                 name="password"
                                 variant="outlined"
+                                disabled = {type == 'edit' ? true : false}
                                 defaultValue = {data !== undefined && type == 'edit'? data.password : ""} />
                             )}
                         />
@@ -159,14 +183,14 @@ export function UserForm(props){
                                 fullWidth
                                 name="organization"
                                 variant="outlined"
-                                defaultValue = {data !== undefined && type == 'edit'? data.organization : ""} />
+                                defaultValue = {data !== undefined && type == 'edit'? data.organization : ''} />
                             )}
                         />
                     </Grid>
                     <Grid item xs={6}> 
                         <label>User Rights:</label>
                         <Controller
-                            name="rights"
+                            name="right"
                             control={control}
                             render={({ field }) => (
                                 <RadioGroup onChange={e => setValue(e.target.value)}>

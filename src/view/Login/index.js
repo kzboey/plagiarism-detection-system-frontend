@@ -1,14 +1,14 @@
 import React from "react";
 import {TextField,Grid,Paper,Typography,Link,} from "@material-ui/core";
 import './index.scss';
-import {SubmitButton} from '../../components/export'
+import {SubmitButton,CustomSnackbar} from '../../components/export'
 import {get,post} from '../../util/HttpRequest'
 import AppConfig from '../../util/AppConfig.js';
 
 class Login extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { username: "", password:"", authflag:1 };
+        this.state = { username: "", password:"", openAlert:false, alertMessage: ""};
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -20,12 +20,17 @@ class Login extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         //login implementations
-        post(AppConfig.getAPI('getToken'),{eid: this.state.username, password: this.state.password},{}).then(resp =>{
-            if(resp != undefined && resp.code == 0){
+        post(AppConfig.getAPI('getToken'),{eid: this.state.username, password: this.state.password},{'Content-Type': 'application/json'}).then(resp =>{
+            if(resp != undefined && resp.code === 0){
                 AppConfig.setToken(resp.data.access_token);
                 AppConfig.setRefreshToken(resp.data.refresh_token);
                 AppConfig.setUserRight(resp.data.user_right)
                 this.props.history.push("/dashboard");
+            }else if(resp != undefined && resp.code === 1){
+                this.setState({alertMessage: resp.message, openAlert : true});
+            }
+            else{
+                this.setState({alertMessage: "server connection error", openAlert : true});
             }
         })    
     }
@@ -34,6 +39,13 @@ class Login extends React.Component {
     render() {
         return (
         <div>
+            <CustomSnackbar 
+                type='error' 
+                message={this.state.alertMessage}
+                open={this.state.openAlert}
+                onClose={
+                    () => this.setState({openAlert : false})
+                }/>
             <Grid container spacing={0} justify="center" direction="row">
                 <Grid item>
                 <Grid

@@ -13,13 +13,13 @@ export default class AppConfig {
 	}
 
 	static setUserRight(right) {
-		Config.right = right;
-		// localStorage.setItem('user-right', right); 
+		// Config.right = right;
+		localStorage.setItem('user-right', right); 
 	}
 
 	static getUserRight() {
-		return Config.right;
-		// return localStorage.getItem('user-right') || ''
+		// return Config.right;
+		return localStorage.getItem('user-right') || ''
 	}
 
 	static getRequestTimeout() {
