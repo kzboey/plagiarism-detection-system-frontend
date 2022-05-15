@@ -24,7 +24,9 @@ class Login extends React.Component {
             if(resp != undefined && resp.code === 0){
                 AppConfig.setToken(resp.data.access_token);
                 AppConfig.setRefreshToken(resp.data.refresh_token);
-                AppConfig.setUserRight(resp.data.user_right)
+                AppConfig.setUserRight(resp.data.user_right);
+                const AuthStr = 'Bearer '.concat(resp.data.access_token); 
+                this.handleUserInfo(AuthStr);
                 this.props.history.push("/dashboard");
             }else if(resp != undefined && resp.code === 1){
                 this.setState({alertMessage: resp.message, openAlert : true});
@@ -35,6 +37,14 @@ class Login extends React.Component {
         })    
     }
 
+    handleUserInfo(AuthStr) {
+        get(AppConfig.getAPI('user'),{Authorization: AuthStr}).then(resp => {
+            if(resp != undefined && resp.code === 0){      
+                console.log("users name: "+resp.data.first_name);         
+                AppConfig.setUserName(resp.data.first_name);
+            }
+        }); 
+    }
 
     render() {
         return (

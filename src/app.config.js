@@ -15,7 +15,7 @@ module.exports = {
 			task: '/vtl/task/',
 			upload: '/vtl/upload/',
 			submissions: '/vtl/submissions/',
-			deleteSubmission: '/vtl/submission/',
+			submission: '/vtl/submission/',
 			getPages: '/vtl/pages',
 			getContents: '/vtl/getContents',
 			getContentsPids: '/vtl/getContentsPids',

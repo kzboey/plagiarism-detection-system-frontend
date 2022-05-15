@@ -74,8 +74,8 @@ const useStyles = makeStyles(theme => ({
         return className;
     }
 
-    const handleClickOpen = (origin) => {
-        callbackElement(origin);
+    const handleClickOpen = (content_id, origin) => {
+        callbackElement(content_id, origin);
     };
     
     const getOriginPage = (origin) => {
@@ -95,9 +95,9 @@ const useStyles = makeStyles(theme => ({
         return Math.trunc(100*(Math.round(score * 100) / 100)) + "%";
     };
 
-    const callbackElement = (origin) =>{
+    const callbackElement = (content_id, origin) =>{
         const data = [origin];
-        popOutElement(data);
+        popOutElement([content_id], data);
     }
 
     return(
@@ -110,7 +110,7 @@ const useStyles = makeStyles(theme => ({
             </Box> 
             <Divider/>
             {rows.map((row,index) => (
-                <ListItem divider className={getListClassName(row.content_type)} onClick={() => handleClickOpen(row.origin)}>
+                <ListItem divider className={getListClassName(row.content_type)} onClick={() => handleClickOpen(row.content_id, row.origin)}>
                     <Typography variant="h3" className={classes.listIndex}>
                         {++index}
                     </Typography>  

@@ -21,9 +21,12 @@ export default function MatchingReport(props){
     const [sourceData, setSourceData] =  useState([]);
     const [open, setOpen] = useState(false);
     const [popoutCanvas, setPopoutCanvas] = useState([]);
+    const [popoutCanvas2, setPopoutCanvas2] = useState([]);
     const [popout , setPopout] = useState(false);  
     const pids = props.location.state.pageIds;
-    const USER_TOKEN = AppConfig.getToken()
+    const eqnValue = props.location.state.eqnValue;
+    const sentenceValue = props.location.state.sentenceValue;
+    const USER_TOKEN = AppConfig.getToken();
     const AuthStr = 'Bearer '.concat(USER_TOKEN); 
     let counter = 0;    //counter for number in bounding
 
@@ -47,7 +50,7 @@ export default function MatchingReport(props){
     }
 
     const getSimilarityContent = async() => {
-        post(AppConfig.getAPI('getContentsPids'),{data:pids},{Authorization: AuthStr}).then(resp =>{
+        post(AppConfig.getAPI('getContentsPids'),{data:pids, eqnValue : eqnValue, sentenceValue: sentenceValue},{Authorization: AuthStr}).then(resp =>{
             if(resp != undefined && resp.code === 0){             
                 setSimilarityData(resp.data);
                 getSourceContent(resp.data);
@@ -69,20 +72,21 @@ export default function MatchingReport(props){
         })
     }
 
-    const handlePopOutData = useCallback((origin) => {
-        setPopout(true);
-        getPopOutContent(origin);
+    const handlePopOutData = useCallback((this_content, origin) => {
+        console.log("this content id: "+this_content);
+        getPopOutContent(this_content, false);
+        getPopOutContent(origin, true);    
     })
 
-    async function getPopOutContent(origin){
+    async function getPopOutContent(content_id, isSource){
         //origin is content ids array of the contents of another page      
-        post(AppConfig.getAPI('getContents'),{data:origin},{Authorization: AuthStr}).then(resp =>{
+        post(AppConfig.getAPI('getContents'),{data:content_id},{Authorization: AuthStr}).then(resp =>{
             if(resp !== undefined && resp.code === 0){             
                 let popoutData = resp.data;
                 let popoutImg = [];
                 getPopOutImage(popoutData).then(res =>{
                     popoutImg = res;
-                    createPopOutContent(popoutImg,popoutData);
+                    createPopOutContent(popoutImg,popoutData, isSource);
                 });      
             }
         });
@@ -104,7 +108,7 @@ export default function MatchingReport(props){
     }
 
 
-    const createPopOutContent = (popoutImg,popoutData) =>{
+    const createPopOutContent = (popoutImg,popoutData, isSource) =>{
         if(popoutData === undefined || popoutImg === undefined || popoutImg.length === 0 || popoutData.length === 0) return;
         let popOutContent = popoutImg.map((img, index) => {
             let boundedBoxData = [];
@@ -117,20 +121,33 @@ export default function MatchingReport(props){
                      boundedBoxData.push(data);
                  }
              })
-             if(!exist) return <Canvas image={img.base64img} data={boundedBoxData} isPopOut={true} pname={img.page_name}/>
+             if(!exist) return (<div><Canvas image={img.base64img} data={boundedBoxData} isPopOut={true} pname={img.page_name}/><span>{img.page_name}</span></div>)
         }) 
-        setPopoutCanvas(popOutContent);
-        setOpen(true);
+        if(isSource){
+            setPopoutCanvas2(popOutContent);
+            setPopout(true);
+            setOpen(true);
+        }else{
+            setPopoutCanvas(popOutContent);
+        }
+
     }
 
     const closePopOut = () =>{
         setPopout(false);
         setOpen(false);
         setPopoutCanvas([]);
+        setPopoutCanvas2([]);
     }
 
     return(
         <Box className="whole-container">
+            {popout && <CustomDialog
+                    open={open}
+                    onClose={() => closePopOut()}
+                    content = {popoutCanvas}
+                    content2 = {popoutCanvas2}
+            />}
             <Container className={classes.root}>   
                 <Grid container spacing={3}>
                     <Grid item xs={7} spacing={2}>
@@ -144,7 +161,7 @@ export default function MatchingReport(props){
                                             boundedBoxData.push(data);
                                         }
                                     })
-                                    return <Canvas image={img.base64img} data={boundedBoxData} isPopOut={false} pname={img.page_name} popOutElement={handlePopOutData}/>
+                                    return <Canvas image={img.base64img} data={boundedBoxData} isPopOut={false} pname={img.page_name} popOutElement={handlePopOutData} key={img.page_id}/>
                             }) 
                         }
                     </Grid>
@@ -153,11 +170,6 @@ export default function MatchingReport(props){
                     </Grid>
                 </Grid>
             </Container>`  
-            {popout && <CustomDialog
-                    open={open}
-                    onClose={() => closePopOut()}
-                    content = {popoutCanvas}
-            />}
         </Box>       
     )
     

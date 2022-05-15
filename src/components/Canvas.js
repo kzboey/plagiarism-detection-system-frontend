@@ -7,9 +7,8 @@ const useStyles = makeStyles(theme => ({
         height : '100%',
     },
     box : {
-        width : '100%',
-        overflow:'auto',
-        position : 'relative'
+        paddingLeft: '12px',
+        paddingRight: '12px',
     }
 }))
 
@@ -62,7 +61,7 @@ export default function Canvas(props) {
                     var box_upper_y = coordinate.position_y1;
                     var box_width = coordinate.position_x2 - coordinate.position_x1;
                     var box_height = coordinate.position_y2 - coordinate.position_y1;
-                    let isNewElement = addElements(box_upper_x,box_upper_y,box_width,box_height,coordinate.origin);
+                    let isNewElement = addElements(box_upper_x, box_upper_y, box_width, box_height, coordinate.origin, coordinate.content_id);
                     var mid_y = coordinate.position_y2 -(box_height/4);
                     var counter_space_adjust = coordinate.counter>= 10 ? 100 : 75;
                     if(isNewElement){
@@ -89,10 +88,10 @@ export default function Canvas(props) {
         }
     }
 
-    const addElements = (box_upper_x, box_upper_y, box_width, box_height, c_origin) =>{
+    const addElements = (box_upper_x, box_upper_y, box_width, box_height, c_origin, content_id) =>{
         let isNewElement = true;
         if(elements.length === 0){
-            elements.push({left:box_upper_x, top:box_upper_y, width:box_width, height:box_height, origin: [c_origin]}); //origin: content id of source
+            elements.push({left:box_upper_x, top:box_upper_y, width:box_width, height:box_height, origin: [c_origin], content_id: content_id}); //origin: content id of source
         }else{
             elements.forEach(element =>{
                 if(element.left === box_upper_x && element.top === box_upper_y && element.width === box_width && element.height === box_height && element.origin !== c_origin){
@@ -101,7 +100,7 @@ export default function Canvas(props) {
                 }
             })
             if(isNewElement){
-                elements.push({left:box_upper_x, top:box_upper_y, width:box_width, height:box_height, origin: [c_origin]});
+                elements.push({left:box_upper_x, top:box_upper_y, width:box_width, height:box_height, origin: [c_origin], content_id: content_id});
             }
         }
         return isNewElement;
@@ -117,13 +116,13 @@ export default function Canvas(props) {
 
         elements.forEach(element => {
             if (y > element.top && y < element.top + element.height && x > element.left && x < element.left + element.width) {
-                callbackElement(element.origin);
+                callbackElement(element.content_id, element.origin);
             }
         })   
     }
 
-    const callbackElement = (origin) =>{
-        popOutElement(origin);
+    const callbackElement = (content_id, origin) =>{
+        popOutElement([content_id], origin);
     }
 
     //Initialization
@@ -138,7 +137,7 @@ export default function Canvas(props) {
     }, [image])
 
     return (
-        <Container>
+        <Container className={classes.box}>
             <canvas className={classes.mycanvas} ref={canvasRef}  {...props}/> 
         </Container>
     )  

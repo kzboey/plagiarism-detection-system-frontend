@@ -44,6 +44,7 @@ export default function Header(props) {
     const [isSideBarOpen, setIsSideBarOpen] = useState(false);
     const [title, setTitle] = useState(titles["/"]);
     const userRight = AppConfig.getUserRight();
+    const userName = AppConfig.getUserName();
 
     const toggleSideBar = () => {
         setIsSideBarOpen(true);
@@ -78,8 +79,8 @@ export default function Header(props) {
                     </Typography>
                     
                     <section className={classes.rightToolbar}>
-                        <Avatar alt="Avatar" src={myavatar}/>
-                        <span  className="pd-5">New User</span>
+                        {/* <Avatar alt="Avatar" src={myavatar}/> */}
+                        <span className="pd-5">{userName}</span>
                         <IconButton tips="Logout" color="inherit" aria-label="Save" handleClick={handleLogout}>
                             <LogoutIcon />
                         </IconButton>

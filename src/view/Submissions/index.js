@@ -1,7 +1,8 @@
 import React, {useState, useEffect,useRef} from 'react'
-import {Box,Grid,Typography,makeStyles} from '@material-ui/core';
-import {CustomDialog,SubmitButton,IconButton,ConfirmDialog,ExpandableTables,CustomSnackbar,CircularProgressWithLabel} from '../../components/export'
-import score from '../../resources/Score.json';
+import {Box,Grid,makeStyles} from '@material-ui/core';
+import {SubmitButton,IconButton,ConfirmDialog,ExpandableTables,CustomSnackbar,CircularProgressWithLabel} from '../../components/export'
+import Slider from '@mui/material/Slider';
+import Typography from '@mui/material/Typography';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import ButtonGroup  from '@material-ui/core/ButtonGroup';
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -56,18 +57,18 @@ export default function Submissions(props){
     const [loaded, setLoaded] = useState(0);
     const [openDialog, setOpenDialog] = useState(false);
     const [isSucess, setIsSucess] = useState(false);
+    const [eqnvalue, setEqnvalue] = useState(60);
+    const [sentencevalue, setSentencevalue] = useState(60);
 
     const urlParams = new URLSearchParams(props.history.location.search);
     const taskId = props.match.params.id;
-    const pageTitle = urlParams.get('course_id') + ' ('+ urlParams.get('task_name_id') + ')';
     const USER_TOKEN = AppConfig.getToken()
     const AuthStr = 'Bearer '.concat(USER_TOKEN); 
     const uploadFile = useRef(null);
-    const downloadurl = AppConfig.getAPI('downloadImages') + taskId;
 
     useEffect(async () => {
         fetchData();
-    },[data.length]);
+    },[]);
 
     const fetchData = () => {
         let url = AppConfig.getAPI('submissions') + taskId;
@@ -91,7 +92,7 @@ export default function Submissions(props){
     const handleRemove = () => {
         //api delete data in db
         
-        let url = AppConfig.getAPI('deleteSubmission') + deleteId+'?task_id='+taskId;
+        let url = AppConfig.getAPI('submission') + taskId+'?author='+deleteId;
         if(deleteId != ''){
             deletes(url,{Authorization: AuthStr}).then(resp => {
                 if(resp != undefined && resp.code == 0){     
@@ -114,12 +115,14 @@ export default function Submissions(props){
         let current_path = props.location.pathname;
         let url = current_path + (current_path.substr(current_path.length - 1) != '/' ? '/' : '') +author;
         let pids = [];
+        console.log("equation value "+ eqnvalue);
+        console.log("sentence value "+ sentencevalue);
         subItems.map(item => {
             pids.push(item.page_id);
         });
         props.history.push({
             pathname: url,
-            state : {pageIds : pids}
+            state : {pageIds : pids, eqnValue : eqnvalue, sentenceValue : sentencevalue}
         });
     }
 
@@ -157,13 +160,6 @@ export default function Submissions(props){
                     progress == 100 || prg == 100 ? setIsSucess(true) : setIsSucess(false);
                     setOpenDialog(true);
                   },
-                //   onDownloadProgress: data => {
-                //     const prg= Math.round(progress + (100 * data.loaded) / totalFileSize);
-                //     console.log("onDownloadProgress file progress: "+prg);
-                //     setIsSucess(true)
-                //     setProgress(prg);
-                //     setOpenDialog(true);
-                //   },
                 }).then(resp =>{
                 if(resp.data != undefined && resp.data.code == 0){
                     console.log(resp.data.message);
@@ -212,6 +208,7 @@ export default function Submissions(props){
         setProgress(0);
         
     };
+
     //row item value for data table
     const rows = data.map(item =>
         createData(
@@ -235,11 +232,6 @@ export default function Submissions(props){
 
     return(
         <Box>
-            {/* <CustomDialog
-                open={openDialog}
-                // onClose={() => setOpenDialog(false)}
-                content = {<Box display="block" className={classes.progressBar}><CircularProgressWithLabel value={progress} success={isSucess}/></Box> }
-            /> */}
             {openDialog && <div className={classes.progressBar2}><CircularProgressWithLabel value={progress} success={isSucess}/></div>}
             <CustomSnackbar 
                 type={alertType} 
@@ -251,10 +243,32 @@ export default function Submissions(props){
                     <h2>Submissions:</h2>     
                 </Grid>
                 <Grid item xs={8} className="button-row">
-                   <input id="uploadButton" ref={uploadFile} onChange={handleUpload} type="file" name="document" accept="image/*" style={{ display: 'none' }}  multiple />  
+                    <Grid item xs={4} className="button-row-inner">
+                        <Typography gutterBottom>Equation Sensitivity</Typography>
+                        <Slider
+                            label="Tooltip value labels"
+                            valueLabelDisplay="auto"
+                            aria-label="custom thumb label"
+                            onChange={(e, val)=>setEqnvalue(val)}
+                            defaultValue={eqnvalue}
+                            min={0}
+                            max={90}
+                        />
+                    </Grid>
+                    <Grid item xs={4} className="button-row-inner">
+                        <Typography gutterBottom>Sentences Sensitivity</Typography>
+                        <Slider
+                            label="Tooltip value labels"
+                            valueLabelDisplay="auto"
+                            aria-label="custom thumb label"
+                            onChange={(e, val)=>setSentencevalue(val)}
+                            defaultValue={sentencevalue}
+                            min={0}
+                            max={90}
+                        />
+                    </Grid>
+                    <input id="uploadButton" ref={uploadFile} onChange={handleUpload} type="file" name="document" accept="image/*" style={{ display: 'none' }}  multiple />  
                     <label htmlFor="uploadButton">
-                        {/* <SubmitButton title="Download" type="upload" onPress={()=>handleClickDownload()}/>   */}
-                        {/* <a href={downloadurl}>Download</a> */}
                         <SubmitButton title="Upload" type="upload" component="span" onPress={()=>handleClickUpload()}/>     
                     </label>
                 </Grid>
@@ -263,6 +277,7 @@ export default function Submissions(props){
                         headers={headers} 
                         subHeaders={subheaders} 
                         datas={rows}
+                        sortColumn="modified_date"
                         />
                 </Grid>
             </Grid>

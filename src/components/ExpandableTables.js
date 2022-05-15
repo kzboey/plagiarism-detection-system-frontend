@@ -6,6 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 import TablePagination from "@material-ui/core/TablePagination";
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -19,6 +20,17 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 const useStyles = makeStyles(theme => ({
   searchBar : {
     marginBottom : '12px'
+  },
+  visuallyHidden: {
+    border: 0,
+    clip: "rect(0 0 0 0)",
+    height: 1,
+    margin: -1,
+    overflow: "hidden",
+    padding: 0,
+    position: "absolute",
+    top: 20,
+    width: 1
   }
 }))
 
@@ -66,15 +78,43 @@ const ExpandableTableRow = ({ children, subHeader,curentRow, ...rest}) => {
 
 export default function ExpandableTables(props){
     const classes = useStyles();
-    const {headers,subHeaders,datas, ...rest} = props;
+    const {headers,subHeaders,datas, sortColumn, ...rest} = props;
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows, setRows] = useState(datas);
     const [searched, setSearched] = useState(""); 
+    const [order, setOrder] = React.useState("asc");
+    const [orderBy, setOrderBy] = React.useState(sortColumn);
 
     useEffect(async () => {
       setRows(datas);
     },[datas]);
+
+    const descendingComparator = (a, b, orderBy) => {
+      if (b[orderBy] < a[orderBy]) {
+        return -1;
+      }
+      if (b[orderBy] > a[orderBy]) {
+        return 1;
+      }
+      return 0;
+    }
+
+    const getComparator = (order, orderBy) => {
+      return order === "desc"
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+    }
+
+    function stableSort(array, comparator) {
+      const stabilizedThis = array.map((el, index) => [el, index]);
+      stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) return order;
+        return a[1] - b[1];
+      });
+      return stabilizedThis.map(el => el[0]);
+    }
 
     const requestSearch = (searchedVal) => {
       const filteredRows = datas.filter((row) => {
@@ -104,6 +144,12 @@ export default function ExpandableTables(props){
       setPage(0);
     };
 
+    const createSortHandler = property => {
+      const isAsc = orderBy === property && order === "asc";
+      setOrder(isAsc ? "desc" : "asc");
+      setOrderBy(property);
+    };
+
     return(
         <Box>
           <SearchBar
@@ -122,16 +168,28 @@ export default function ExpandableTables(props){
                       <TableCell
                         key={header.id}
                         align={header.align}
+                        sortDirection={orderBy === header.id ? order : false} 
                       >
-                        {header.label}
+                        <TableSortLabel
+                          active={orderBy === header.id}
+                          direction={orderBy === header.id ? order : "asc"}
+                          onClick={() => createSortHandler(header.id)}
+                        >
+                          {header.label}
+                          {orderBy === header.id ? (
+                            <span className={classes.visuallyHidden}>
+                              {order === "desc" ? "sorted descending" : "sorted ascending"}
+                            </span>
+                          ) : null}
+                        </TableSortLabel>
                       </TableCell>
                   ))}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map(row => {
+                {/* {rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) */}
+                  {stableSort(rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage), getComparator(order, orderBy)).map(row => {
                     return (
                       <ExpandableTableRow
                         key={row.name}

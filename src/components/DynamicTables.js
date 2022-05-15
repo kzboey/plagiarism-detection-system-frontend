@@ -6,6 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 import TablePagination from "@material-ui/core/TablePagination";
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -22,11 +23,13 @@ const useStyles = makeStyles(theme => ({
 
 export default function DynamicTables(props){
     const classes = useStyles();
-    const {headers,datas, ...rest} = props;
+    const {headers,datas, sortColumn, ...rest} = props;
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [rows, setRows] = useState(datas);
     const [searched, setSearched] = useState("");
+    const [order, setOrder] = React.useState("asc");
+    const [orderBy, setOrderBy] = React.useState(sortColumn);
 
     const requestSearch = (searchedVal) => {
       const filteredRows = datas.filter((row) => {
@@ -56,6 +59,23 @@ export default function DynamicTables(props){
       setPage(0);
     };
 
+    const descendingComparator = (a, b, orderBy) => {
+      if (b[orderBy] < a[orderBy]) {
+        return -1;
+      }
+      if (b[orderBy] > a[orderBy]) {
+        return 1;
+      }
+      return 0;
+    }
+
+    const getComparator = (desc, orderBy) => {
+      return desc ===  true
+      ? (a, b) => descendingComparator(a, b, orderBy)
+      : (a, b) => -descendingComparator(a, b, orderBy);
+    }
+
+
     useEffect(() => { setRows(datas)}, [datas] )
 
     return(
@@ -75,6 +95,7 @@ export default function DynamicTables(props){
                       <TableCell
                         key={header.id}
                         align={header.align}
+                        sortDirection={orderBy === header.id ? order : false}
                       >
                         {header.label}
                       </TableCell>

@@ -22,6 +22,16 @@ export default class AppConfig {
 		return localStorage.getItem('user-right') || ''
 	}
 
+	static setUserName(name) {
+		// Config.right = right;
+		localStorage.setItem('user-name', name); 
+	}
+
+	static getUserName() {
+		// return Config.right;
+		return localStorage.getItem('user-name') || ''
+	}
+
 	static getRequestTimeout() {
 		return Config.request.timeout;
 	}

@@ -177,7 +177,7 @@ export default function TaskLists(props){
                     <SubmitButton title="New Task" type="upload" onPress={()=>handleClickOpenCreate()}/>               
                 </Grid>
                 <Grid item xs={8}>      
-                    <DynamicTables headers={headers} datas={rows}/>   
+                    <DynamicTables headers={headers} datas={rows} sortColumn="start"/>   
                 </Grid>
             </Grid>
             <FormDialog
