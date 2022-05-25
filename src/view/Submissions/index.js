@@ -28,7 +28,7 @@ const headers = [
     {id : "author_name", label : "Author", align: "left", format: value => value.toLocaleString()},
     {id : "document", label : "Files", align: "center", format: value => value.toLocaleString()},
     {id : "length", label : "Pages", align: "center",format: value => value.toLocaleString()},
-    {id : "overall_similarity", label : "Similarity", align: "center",format: value => value.toLocaleString()},
+    {id : "overall_similarity", label : "Similarity(%)", align: "center",format: value => value.toLocaleString()},
     {id : "modified_date", label : "Uploaded Date", align: "center"},
     {id : "action", label : "Actions", align: "center"}
 ]
@@ -110,7 +110,7 @@ export default function Submissions(props){
         }
     };
 
-    const handleClick = (author,subItems) => {
+    const handleClick = (author,subItems,overall_similarity) => {
         
         let current_path = props.location.pathname;
         let url = current_path + (current_path.substr(current_path.length - 1) != '/' ? '/' : '') +author;
@@ -122,7 +122,7 @@ export default function Submissions(props){
         });
         props.history.push({
             pathname: url,
-            state : {pageIds : pids, eqnValue : eqnvalue, sentenceValue : sentencevalue}
+            state : {pageIds : pids, eqnValue : eqnvalue, sentenceValue : sentencevalue, overall_similarity : overall_similarity*100}
         });
     }
 
@@ -172,7 +172,7 @@ export default function Submissions(props){
                     setAlertType('error');
                     setOpenMessage(resp.data.message);
                     setOpenAlert(true);
-                    reject(false);
+                    resolve(false);
                 }
             })   
         })
@@ -215,10 +215,10 @@ export default function Submissions(props){
             item.author_name,
             item.document, 
             item.length,
-            item.overall_similarity, 
+            item.overall_similarity*100, 
             item.modified_date,
             <ButtonGroup variant="outlined">
-                <IconButton tips="view report" handleClick={() => { handleClick(item.author_name,item.expandedItems)}}>
+                <IconButton tips="view report" handleClick={() => { handleClick(item.author_name,item.expandedItems,item.overall_similarity)}}>
                     <FileCopyIcon/>
                 </IconButton>
                 <IconButton tips="delete" handleClick={() => handleClickOpenConfirmDelete(item.author_name)}>

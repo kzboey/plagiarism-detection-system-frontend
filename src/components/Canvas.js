@@ -50,20 +50,24 @@ export default function Canvas(props) {
                 centerShift_x,centerShift_y,image.width*ratio, image.height*ratio);
             //draw bouding box
             ctx.beginPath();
-            ctx.lineWidth = "7"; 
-            ctx.font = "5rem Arial";  
+            ctx.lineWidth = "2"; 
+            ctx.font = "1.5rem Arial";  
             cvs.elements = [];
             let numberList = [];
-            if(coordinates !== undefined && coordinates.lenght !== 0){
+            if(coordinates !== undefined && coordinates.length !== 0){
                 coordinates.map(coordinate =>{
                     ctx.strokeStyle = coordinate.content_type === "sentence" ? "red" : "blue";
-                    var box_upper_x = coordinate.position_x1;
-                    var box_upper_y = coordinate.position_y1;
-                    var box_width = coordinate.position_x2 - coordinate.position_x1;
-                    var box_height = coordinate.position_y2 - coordinate.position_y1;
+                    var adjusted_x1 = coordinate.position_x1/3.2;
+                    var adjusted_x2 = coordinate.position_x2/3.2;
+                    var adjusted_y1 = coordinate.position_y1/3.2;
+                    var adjusted_y2 = coordinate.position_y2/3.2;
+                    var box_upper_x = adjusted_x1;
+                    var box_upper_y = adjusted_y1;
+                    var box_width = adjusted_x2 - adjusted_x1;
+                    var box_height = adjusted_y2 - adjusted_y1;
                     let isNewElement = addElements(box_upper_x, box_upper_y, box_width, box_height, coordinate.origin, coordinate.content_id);
-                    var mid_y = coordinate.position_y2 -(box_height/4);
-                    var counter_space_adjust = coordinate.counter>= 10 ? 100 : 75;
+                    var mid_y = adjusted_y2 -(box_height/4);
+                    var counter_space_adjust = coordinate.counter>= 10 ? 50 : 25;
                     if(isNewElement){
                         ctx.strokeRect(box_upper_x, box_upper_y, box_width, box_height);
                         if(!isPopOut){

@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 
   export default function DynamicBox(props){
     const classes = useStyles();
-    const {datas, sourceDatas, popOutElement, ...rest} = props;
+    const {datas, sourceDatas, popOutElement, overall_similarity, ...rest} = props;
     const [rows, setRows] = useState(datas);
 
     useEffect(() => { setRows(datas)}, [datas] )
@@ -105,7 +105,7 @@ const useStyles = makeStyles(theme => ({
             <Typography variant="h2">Match Overview</Typography>  
             <List className={classes.matchlist}> 
             <Box className={classes.matchOverall}>
-                <p>0%</p>
+                <p>{overall_similarity}%</p>
                 <span>{rows.length} matches</span> 
             </Box> 
             <Divider/>

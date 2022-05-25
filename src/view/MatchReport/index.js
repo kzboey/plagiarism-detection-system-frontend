@@ -26,6 +26,7 @@ export default function MatchingReport(props){
     const pids = props.location.state.pageIds;
     const eqnValue = props.location.state.eqnValue;
     const sentenceValue = props.location.state.sentenceValue;
+    const overall_similarity = props.location.state.overall_similarity;
     const USER_TOKEN = AppConfig.getToken();
     const AuthStr = 'Bearer '.concat(USER_TOKEN); 
     let counter = 0;    //counter for number in bounding
@@ -166,7 +167,7 @@ export default function MatchingReport(props){
                         }
                     </Grid>
                     <Grid item xs={5}>
-                        <DynamicBox datas={similarityData} sourceDatas={sourceData} popOutElement={handlePopOutData}/>
+                        <DynamicBox datas={similarityData} sourceDatas={sourceData} popOutElement={handlePopOutData} overall_similarity={overall_similarity}/>
                     </Grid>
                 </Grid>
             </Container>`  
